@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +8,20 @@
     <!--The following in only required in prod, the dev htmlwebpcakplugin will take care of it witout linking the index.js -->
     <script src="./main.bundle.js"></script>
 </head>
-    <body>
-        <div class="cal">
-            <form>
-                hello is this working
+<div data-include=""></div>
+<body>
+    <div class="cal">
+        <form>
+            hello is this working
             </br>
             <p>Result : <span id="display"></span></p>
-            <input type="number" class="input" placeholder="Enter first number" name="firstnumber" value="1" min="1" min="9" /><br>
-            <input type="number" class="input" placeholder="Enter second number" name="secondnumber" value="1" min="1" min="9" /><br><br>
+            <input type="number" class="input" placeholder="Enter first number" name="firstnumber" value="1" min="1"
+                min="9" /><br>
+            <input type="number" class="input" placeholder="Enter second number" name="secondnumber" value="1" min="1"
+                min="9" /><br><br>
             <button type="submit" class="button">Subtract</button>
-            </form>
-        </div>
-    </body>
+        </form>
+    </div>
+</body>
+<div data-include="/path/to/include.html"></div>
 </html>

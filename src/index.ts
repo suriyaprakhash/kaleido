@@ -1,14 +1,14 @@
 
-import {Calculator} from './calculator'
+import { Calculator } from './logic/calculator'
 
 var calc = new Calculator();
 
 function init() {
     const form = document.querySelector("form");
     form?.addEventListener("submit", submitHandler);
-  }
+}
 
-  function submitHandler(e: Event) {
+function submitHandler(e: Event) {
     e.preventDefault();
     const num1 = document.querySelector("input[name='firstnumber']") as HTMLInputElement;
     const num2 = document.querySelector("input[name='secondnumber']") as HTMLInputElement;
@@ -16,8 +16,8 @@ function init() {
     // const result = Number(num2.value) - Number(num1.value)
     const resultElement = document.querySelector("p");
     if (resultElement) {
-      resultElement.textContent = result.toString();
+        resultElement.textContent = result.toString();
     }
-  }
+}
 
-  init();
+init();
