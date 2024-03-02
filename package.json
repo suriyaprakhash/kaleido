@@ -1,20 +1,20 @@
 {
   "name": "kaleido",
   "version": "1.0.0",
-  "description": "This is to visualize spring based projects",
-  "main": "index.js",
-  "scripts" : {
-    "init": "snowpack init",
-    "start": "snowpack dev",
-    "build": "snowpack build",
-    "deploy": "gh-pages -d build"
-},
+  "description": "This is a tool for visualizing the spring application",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "webpack-dev-server --mode development",
+    "build": "webpack --mode production"
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@snowpack/plugin-typescript": "^1.2.1",
-    "snowpack": "^3.8.8",
+    "html-webpack-plugin": "^5.6.0",
+    "ts-loader": "^9.5.1",
     "typescript": "^5.3.3",
-    "gh-pages": "6.1.1"
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.2"
   }
 }
