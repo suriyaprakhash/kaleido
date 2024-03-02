@@ -4,24 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaleido</title>
+    <title>Calculator</title>
     <!--The following in only required in prod, the dev htmlwebpcakplugin will take care of it witout linking the index.js -->
     <script src="./main.bundle.js"></script>
 </head>
-<div data-include=""></div>
 <body>
     <div class="cal">
-        <form>
-            hello is this working
-            </br>
-            <p>Result : <span id="display"></span></p>
-            <input type="number" class="input" placeholder="Enter first number" name="firstnumber" value="1" min="1"
+        <h1>Calc</h1>
+        <form class="add-form">
+            <h2>Addition</h2>
+            </br>  
+            <input type="number" class="input" placeholder="Enter first number" name="add-firstnumber" value="1" min="1"
                 min="9" /><br>
-            <input type="number" class="input" placeholder="Enter second number" name="secondnumber" value="1" min="1"
+            <input type="number" class="input" placeholder="Enter second number" name="add-secondnumber" value="1" min="1"
+                min="9" /><br><br>
+            <button type="submit" class="button">Add</button>
+            </br>  
+        </form>
+        <form class="sub-form">
+            <h2>Subtraction</h2>
+            </br>  
+            <input type="number" class="input" placeholder="Enter first number" name="sub-firstnumber" value="1" min="1"
+                min="9" /><br>
+            <input type="number" class="input" placeholder="Enter second number" name="sub-secondnumber" value="1" min="1"
                 min="9" /><br><br>
             <button type="submit" class="button">Subtract</button>
+            </br>  
         </form>
     </div>
+    <h3>Result : </h3><p class="res"><span id="display"></span></p>
 </body>
-<div data-include="/path/to/include.html"></div>
 </html>

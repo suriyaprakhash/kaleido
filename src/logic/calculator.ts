@@ -1,5 +1,8 @@
 export class Calculator {
-    public subtract(num1: number, num2: number): Number {
-        return num2 - num1;
+    public add(num1: number, num2: number): Number {
+        return num1 + num2;
+    }
+    public sub(num1: number, num2: number): Number {
+        return num1 - num2;
     }
 }

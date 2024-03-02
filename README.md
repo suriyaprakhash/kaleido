@@ -1,6 +1,10 @@
 # Webpack working
 
-Use this project as a sample to work on
+Use this project as a sample to work on,
+
+- Webpack
+- TS Loader to convert ts files to js
+- HTMLWebpackPlugin
 
 ## Local running
 
