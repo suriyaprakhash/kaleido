@@ -17,7 +17,7 @@ function App({}: AppProps) {
     <div className="App">
       <header className="App-header">
         {/* <img src={logo} className="App-logo" alt="logo" /> */}
-My Kaleido app is comming on the way
+My Kaleido app is comming on the way and testing git push
       </header>
     </div>
   );
