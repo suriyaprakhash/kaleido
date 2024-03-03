@@ -6,6 +6,8 @@ Use this project as a sample to work on,
 - TS Loader to convert ts files to js
 - HTMLWebpackPlugin
 
+> **NOTE**: At the time of wirting this HMR(Hot module reload) is not supported in [ts loader](https://www.npmjs.com/package/ts-loader#hot-module-replacement)
+
 ## Local running
 
 ```
