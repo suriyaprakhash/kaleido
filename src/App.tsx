@@ -17,7 +17,7 @@ function App({}: AppProps) {
     <div className="App">
       <header className="App-header">
         {/* <img src={logo} className="App-logo" alt="logo" /> */}
-        my first app is  working - this is not working now without any
+My Kaleido app is comming on the way
       </header>
     </div>
   );
