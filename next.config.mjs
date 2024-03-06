@@ -1,9 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    distDir: 'dist',
-    cleanDistDir: true,
+    // dev: false,
+    // distDir: 'dist',
     output: 'export',
-    images: {unoptimized: true}
+    images: {unoptimized: true},
+    // poweredByHeader: false
 };
 
 export default nextConfig;
