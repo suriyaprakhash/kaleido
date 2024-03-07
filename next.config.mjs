@@ -8,8 +8,8 @@ const nextConfig = {
     output: 'export',
     images: {unoptimized: true},
     // poweredByHeader: false,
-      // Use the CDN in production and localhost for development.
-    assetPrefix: isProd ? 'https://raw.githubusercontent.com/suriyaprakhash/kaleido/gh-pages' : undefined,
+      // Use the CDN in production and localhost for development - https://www.jsdelivr.com/github
+    assetPrefix: isProd ? 'https://cdn.jsdelivr.net/gh/suriyaprakhash/kaleido@gh-pages' : undefined,
 };
 
 export default nextConfig;
