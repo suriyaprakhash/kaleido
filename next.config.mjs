@@ -1,10 +1,15 @@
 /** @type {import('next').NextConfig} */
+
+const isProd = process.env.NODE_ENV === 'production';
+ 
 const nextConfig = {
     // dev: false,
     // distDir: 'dist',
     output: 'export',
     images: {unoptimized: true},
-    // poweredByHeader: false
+    // poweredByHeader: false,
+      // Use the CDN in production and localhost for development.
+    assetPrefix: isProd ? 'https://github.com/suriyaprakhash/kaleido/tree/gh-pages' : undefined,
 };
 
 export default nextConfig;
