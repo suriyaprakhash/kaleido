@@ -9,7 +9,7 @@ const nextConfig = {
     images: {unoptimized: true},
     // poweredByHeader: false,
       // Use the CDN in production and localhost for development.
-    assetPrefix: isProd ? 'https://github.com/suriyaprakhash/kaleido/tree/gh-pages' : undefined,
+    assetPrefix: isProd ? 'https://raw.githubusercontent.com/suriyaprakhash/kaleido/gh-pages' : undefined,
 };
 
 export default nextConfig;
