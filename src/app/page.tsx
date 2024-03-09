@@ -24,29 +24,24 @@ export default function Page() {
     //   hello world
     //   <Footer />
     // </main>
-    <main className="border-8 border-blue-500">
+    <main className="flex flex-col border-8 border-blue-500">
       {/* <h1 className="font-bold text-red-700 text-2xl"> */}
-      <section className="border-8 border-red-500">
-        <h1>
-          Kaleido
+      <section className="border-8 border-red-500 text-center items-center">
+          Visualize your spring dependencies
+          <h1>data gogg - check not getting applied</h1>
           {/* <button onClick={handleClick('/Canvas')}>Show Canvas</button> */}
-        </h1>
-        <div className="border-8 border-red-300 max-w-lg">
+      </section>
+      <section className="border-8 border-red-300 max-w-lg p-3">
           <DragAndDrop />
-        </div>
       </section>
       <section className="border-8 border-red-400 p-2">
         {/* <button onClick={handleClick('/canvas')}>Show Canvas</button> */}
-
-        <div>
-          <p>You clicked {count} times</p>
+        <div className="text-center items-center">
+          <p>Click counter - You clicked {count} times</p>
           <button onClick={() => setHello(count + 1)}>Click me</button>
         </div>
         {/* <Link href="/canvas">Show Canvas</Link> */}
       </section>
-
-
     </main>
-
   );
 }
