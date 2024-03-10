@@ -22,7 +22,7 @@ export default function Page() {
     setJsonData(jsonData)
   }
 
-  const [count, setHello] = useState(0);
+
   const [type] = useState<ValidationType>('SpringBeanJson');
   const [jsonData, setJsonData] = useState();
 
@@ -45,14 +45,7 @@ export default function Page() {
       </section>
       }
 
-      <section className="border-8 border-red-400 p-2">
-        {/* <button onClick={handleClick('/canvas')}>Show Canvas</button> */}
-        <div className="text-center items-center">
-          <p>Click counter - You clicked {count} times</p>
-          <button onClick={() => setHello(count + 1)}>Click me</button>
-        </div>
-        {/* <Link href="/canvas">Show Canvas</Link> */}
-      </section>
+
     </main>
   );
 }
