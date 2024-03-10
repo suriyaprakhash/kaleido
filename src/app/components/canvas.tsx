@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import ForceDirectedGraph from "./forceDirectedGraph";
 
 function Canvas({jsonData, parentCallback}: any) {
 
@@ -8,17 +8,16 @@ function Canvas({jsonData, parentCallback}: any) {
   }
   const nodes: MyNode[] = jsonData.nodes;
 
-  function gotoDragAndDrop() {
-    parentCallback(undefined)
-  }
-
-
   const nodeList = nodes?.map((node) => (
     <div key={node.id}>
       <p>Node: {node.id}</p>
       <p>Group: {node.group}</p>
     </div>
   ));
+
+  function gotoDragAndDrop() {
+    parentCallback(undefined)
+  }
 
   return (
     <section>
@@ -32,7 +31,8 @@ function Canvas({jsonData, parentCallback}: any) {
         </div>
       </section>
       <h2>Canvas</h2>
-      {nodeList}
+      <ForceDirectedGraph jsonData = {jsonData}/>
+      {/* {nodeList} */}
     </section>
 
   )
