@@ -4,11 +4,11 @@ import Link from "next/link";
 import Canvas from "./canvas/page";
 import { FormEvent, useEffect, useState } from "react";
 import DragAndDrop from "./components/dragAndDrop";
+import { ValidationType } from "./shared/fileValidator";
 
 export default function Page() {
-
-
-  const [count, setHello] = useState(0)
+  const [count, setHello] = useState(0);
+  const [type] = useState<ValidationType>('SpringBeanJson');
   // var effectCount = 5;
   // useEffect(setCount);
 
@@ -19,6 +19,7 @@ export default function Page() {
 
 
   return (
+
     // <main className="flex min-h-screen flex-col items-center justify-between p-24">
     //   <Navbar />
     //   hello world
@@ -32,7 +33,7 @@ export default function Page() {
           {/* <button onClick={handleClick('/Canvas')}>Show Canvas</button> */}
       </section>
       <section className="border-8 border-red-300 max-w-lg p-3">
-          <DragAndDrop />
+          <DragAndDrop validationTypeFromParent = {type}/>
       </section>
       <section className="border-8 border-red-400 p-2">
         {/* <button onClick={handleClick('/canvas')}>Show Canvas</button> */}

@@ -1,10 +1,13 @@
 import { useRef, useState } from "react";
+import { ValidationResult, ValidationType, validateFiles } from "../shared/fileValidator";
 
-export default function DragAndDrop() {
+export default function DragAndDrop({validationTypeFromParent}: any) {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const inputRef = useRef<any>(null);
   const [files, setFiles] = useState<any>([]);
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string | undefined>('');
+  // const [validationType] = useState<ValidationType>(validationTypeFromParent);
+  var jsonData: any;
 
   function handleChange(e: any) {
     e.preventDefault();
@@ -19,24 +22,13 @@ export default function DragAndDrop() {
   }
 
   async function handleSubmitFile() {
-    if (files.length === 0) {
-      // no file has been submitted
+    const validationResult: ValidationResult = validateFiles(files, validationTypeFromParent);
+    if (!validationResult.isValid) {
       setFiles([]);
-      setErrorMessage('No files attached');
+      setErrorMessage(validationResult.errorMessage);
     } else {
-      // write submit logic here
-      // fs.readFileSync(files.pat)
-      if (files.length > 1) {
-        setFiles([]);
-        setErrorMessage('More than one file attached');
-      } else if (files[0].type === 'application/json') {
-        const jsonData = await readFile(files[0])
-        console.log(jsonData)
-        setErrorMessage('');
-      } else {
-        setFiles([]);
-        setErrorMessage('Not a json file');
-      }
+      jsonData = await readFile(files[0])
+      console.log(jsonData)
     }
   }
 
@@ -144,7 +136,7 @@ export default function DragAndDrop() {
           <span className="p-2 text-white">Process</span>
         </button>
 
-      {errorMessage.length == 0 ? null :
+      {errorMessage?.length == 0 ? null :
           <div className="bg-red-700 text-white opacity-50 rounded-xl p-2 mt-3 w-auto">{errorMessage}</div>
         }
 
