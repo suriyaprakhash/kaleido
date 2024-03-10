@@ -1,13 +1,14 @@
 import { useRef, useState } from "react";
 import { ValidationResult, ValidationType, validateFiles } from "../shared/fileValidator";
 
-export default function DragAndDrop({validationTypeFromParent}: any) {
+export default function DragAndDrop({validationTypeFromParent, parentCallback}: any) {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const inputRef = useRef<any>(null);
   const [files, setFiles] = useState<any>([]);
   const [errorMessage, setErrorMessage] = useState<string | undefined>('');
   // const [validationType] = useState<ValidationType>(validationTypeFromParent);
-  var jsonData: any;
+
+  // var jsonData: any = parentJsonData;
 
   function handleChange(e: any) {
     e.preventDefault();
@@ -27,10 +28,16 @@ export default function DragAndDrop({validationTypeFromParent}: any) {
       setFiles([]);
       setErrorMessage(validationResult.errorMessage);
     } else {
-      jsonData = await readFile(files[0])
+      var jsonData = await readFile(files[0])
       console.log(jsonData)
+      parentCallback(jsonData)
+      
     }
   }
+
+  // function submitToParent() {
+    
+  // }
 
   const readFile = async (file: File): Promise<any | undefined> => {
     const reader = new FileReader();
