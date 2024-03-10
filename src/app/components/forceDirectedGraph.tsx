@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { color } from 'd3';
+import { D3DragEvent, color } from 'd3';
 import { link } from 'fs';
 import { useEffect, useRef, useState } from 'react';
 import { DataLink, DataNode } from '../shared/forcedDirectedGraph';
@@ -22,7 +22,7 @@ const ForceDirectedGraph = ({ jsonData }: any) => {
             createForceDirectedGraph(jsonData);
             initalized.current = true;
         }
-    }, [count]);
+    }, [jsonData]);
 
     function createForceDirectedGraph(
         data: {
@@ -45,7 +45,7 @@ const ForceDirectedGraph = ({ jsonData }: any) => {
 
         // Create a simulation with several forces.
         const simulation = d3.forceSimulation(nodes)
-            .force("link", d3.forceLink(links).id(d => d.id))
+            .force("link", d3.forceLink(links).id((d: any) => d.id))
             .force("charge", d3.forceManyBody())
             .force("center", d3.forceCenter(width / 2, height / 2))
             .on("tick", ticked);
@@ -80,18 +80,32 @@ const ForceDirectedGraph = ({ jsonData }: any) => {
             .text(d => d.id);
 
         // Add a drag behavior.
-        node.call(d3.drag()
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended));
+        // node.call(d3.drag()
+        //     .on("start", dragstarted)
+        //     .on("drag", dragged)
+        //     .on("end", dragended));
+
+        // Add a drag behavior.
+        const drag = d3.drag<any, any>();
+        drag
+            .on("start", (event: D3DragEvent<SVGGElement, any, any>) => {
+                dragstarted(event); // Assuming dragstarted takes these arguments
+            })
+            .on("drag", (event: any) => {
+                dragged(event); // Assuming dragged takes these arguments
+            })
+            .on("end", (event: any) => {
+                dragended(event); // Assuming dragended takes these arguments
+            });
+        node.call(drag);
 
         // Set the position attributes of links and nodes each time the simulation ticks.
         function ticked() {
             link
-                .attr("x1", d => d.source.x)
-                .attr("y1", d => d.source.y)
-                .attr("x2", d => d.target.x)
-                .attr("y2", d => d.target.y);
+                .attr("x1", (d: any) => d.source.x)
+                .attr("y1", (d: any) => d.source.y)
+                .attr("x2", (d: any) => d.target.x)
+                .attr("y2", (d: any) => d.target.y);
 
             node
                 .attr("cx", d => d.x)
