@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link";
-import Canvas from "./canvas/page";
+import Canvas from "./components/canvas";
 import { FormEvent, useEffect, useState } from "react";
 import DragAndDrop from "./components/dragAndDrop";
 import { ValidationType } from "./shared/fileValidator";
@@ -15,9 +15,16 @@ export default function Page() {
     setJsonData(jsonData)
   }
 
+  const jsonDataCallBack = (jsonData: any) => {
+    // setData(jsonData)
+    console.log('inside page callback')
+    console.log(jsonData)
+    setJsonData(jsonData)
+  }
+
   const [count, setHello] = useState(0);
   const [type] = useState<ValidationType>('SpringBeanJson');
-  const [jsonData, setJsonData] = useState({});
+  const [jsonData, setJsonData] = useState();
 
   return (
 
@@ -28,9 +35,15 @@ export default function Page() {
           <h1>data gogg - check not getting applied</h1>
           {/* <button onClick={handleClick('/Canvas')}>Show Canvas</button> */}
       </section>
+      {jsonData === undefined ? 
       <section className="border-8 border-red-300 max-w-lg p-3">
           <DragAndDrop validationTypeFromParent = {type} parentCallback = {callbackDataFromDragAndDrop} />
       </section>
+      :
+      <section>
+        <Canvas jsonData = {jsonData} parentCallback = {jsonDataCallBack}/>
+      </section>
+      }
 
       <section className="border-8 border-red-400 p-2">
         {/* <button onClick={handleClick('/canvas')}>Show Canvas</button> */}
