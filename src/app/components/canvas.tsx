@@ -1,19 +1,6 @@
-import ForceDirectedGraph from "./forceDirectedGraph";
+import ForceDirectedGraph from "../diagrams/forceDirectedGraph";
 
-function Canvas({jsonData, parentCallback}: any) {
-
-  interface MyNode {
-    id: string;
-    group: number;
-  }
-  const nodes: MyNode[] = jsonData.nodes;
-
-  const nodeList = nodes?.map((node) => (
-    <div key={node.id}>
-      <p>Node: {node.id}</p>
-      <p>Group: {node.group}</p>
-    </div>
-  ));
+function Canvas({jsonData, actuatorType, parentCallback}: any) {
 
   function gotoDragAndDrop() {
     parentCallback(undefined)
@@ -31,6 +18,7 @@ function Canvas({jsonData, parentCallback}: any) {
         </div>
       </section>
       <h2>Canvas</h2>
+      Determined actuator type {actuatorType}
       <ForceDirectedGraph jsonData = {jsonData}/>
       {/* {nodeList} */}
     </section>

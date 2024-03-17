@@ -1,5 +1,9 @@
 import { useRef, useState } from "react";
-import { ValidationResult, ValidationType, validateFiles } from "../shared/fileValidator";
+import { validateFiles } from "../validators/genericFileValidator";
+import { ValidationResult } from "../validators/validatorTypes";
+import { ActuatorType } from "../actuators/actuatorTypes";
+import { ActuatorTypeDecider } from "../actuators/ActuatorTypeDecider";
+
 
 export default function DragAndDrop({validationTypeFromParent, parentCallback}: any) {
   const [dragActive, setDragActive] = useState<boolean>(false);
@@ -28,10 +32,19 @@ export default function DragAndDrop({validationTypeFromParent, parentCallback}: 
       setFiles([]);
       setErrorMessage(validationResult.errorMessage);
     } else {
-      var jsonData = await readFile(files[0])
-      console.log(jsonData)
-      parentCallback(jsonData)
-      
+      let jsonData: Promise<any> = await readFile(files[0]);
+      console.log('handleSubmitFile() - ', jsonData);
+      determineActuatorType(jsonData);
+    }
+
+    function determineActuatorType(jsonData: Promise<any>) {
+      const actuatorType: ActuatorType = ActuatorTypeDecider.decide(jsonData);
+      if (actuatorType === 'unknown') {
+        setFiles([]);
+        setErrorMessage('The file passed is json however the content of the file is not supported and does not seem to be from actuator');
+      } else {
+        parentCallback(jsonData, actuatorType);
+      }
     }
   }
 

@@ -10,3 +10,13 @@ export interface DataNode {
     x: number;
     y: number;
 }
+
+export interface DefaultForceDirectedGraph {
+    nodes: DataNode[];
+    links: DataLink[];
+}
+
+
+
+
+

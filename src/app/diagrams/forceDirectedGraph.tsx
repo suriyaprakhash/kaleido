@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import { D3DragEvent, color } from 'd3';
 import { link } from 'fs';
 import { useEffect, useRef, useState } from 'react';
-import { DataLink, DataNode } from '../shared/forcedDirectedGraph';
+import { DataLink, DataNode } from './forceDirectedGraphTypes';
 
 const ForceDirectedGraph = ({ jsonData }: any) => {
     // this is for the counter

@@ -1,30 +1,30 @@
 'use client'
 
-import Link from "next/link";
+import { useState } from "react";
 import Canvas from "./components/canvas";
-import { FormEvent, useEffect, useState } from "react";
 import DragAndDrop from "./components/dragAndDrop";
-import { ValidationType } from "./shared/fileValidator";
+import { ActuatorType } from "./actuators/actuatorTypes";
 
 export default function Page() {
 
-  const callbackDataFromDragAndDrop = (jsonData: any) => {
+  const callbackFromDragAndDrop = (jsonData: object, actuatorType: ActuatorType) => {
     // setData(jsonData)
-    console.log('inside page callback')
+    console.log('inside page dragNdrop callback')
+    console.log(jsonData)
+    setActuatorType(actuatorType)
+    setJsonData(jsonData)
+    
+  }
+
+  const callbackFromCanvas = (jsonData: object) => {
+    // setData(jsonData)
+    console.log('inside page canvas callback')
     console.log(jsonData)
     setJsonData(jsonData)
   }
 
-  const jsonDataCallBack = (jsonData: any) => {
-    // setData(jsonData)
-    console.log('inside page callback')
-    console.log(jsonData)
-    setJsonData(jsonData)
-  }
-
-
-  const [type] = useState<ValidationType>('SpringBeanJson');
-  const [jsonData, setJsonData] = useState();
+  const [jsonData, setJsonData] = useState<object>();
+  const [actuatorType, setActuatorType] = useState<ActuatorType>('unknown');
 
   return (
 
@@ -35,13 +35,14 @@ export default function Page() {
           <h1>data gogg - check not getting applied</h1>
           {/* <button onClick={handleClick('/Canvas')}>Show Canvas</button> */}
       </section>
+
       {jsonData === undefined ? 
       <section className="border-8 border-red-300 max-w-lg p-3">
-          <DragAndDrop validationTypeFromParent = {type} parentCallback = {callbackDataFromDragAndDrop} />
+          <DragAndDrop validationTypeFromParent='json' parentCallback = {callbackFromDragAndDrop} />
       </section>
       :
       <section>
-        <Canvas jsonData = {jsonData} parentCallback = {jsonDataCallBack}/>
+        <Canvas jsonData = {jsonData} actuatorType = {actuatorType} parentCallback = {callbackFromCanvas}/>
       </section>
       }
 
