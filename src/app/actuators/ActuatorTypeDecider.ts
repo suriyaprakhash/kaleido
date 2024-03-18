@@ -1,5 +1,5 @@
 import { ActuatorType } from './actuatorTypes';
-import { isDefaultForceDirectedGraphTypeGuard } from './actuatorTypeGuards';
+import { isActuatorBeansJson, isDefaultForceDirectedGraphTypeGuard } from './globalActuatorTypeGuard';
 
 export class ActuatorTypeDecider {
 
@@ -8,6 +8,10 @@ export class ActuatorTypeDecider {
         // let defaultForceDirectedGraph: DefaultForceDirectedGraph = jsonData as DefaultForceDirectedGraph;
         if(isDefaultForceDirectedGraphTypeGuard(jsonData)) {
             actuatorTypes = 'defaultForceDirectedGraph';
+        }
+
+        if(isActuatorBeansJson(jsonData)) {
+            actuatorTypes = 'actuatorBeansJson';
         }
         console.log('decide', jsonData);
 
