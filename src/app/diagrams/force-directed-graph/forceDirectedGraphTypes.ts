@@ -7,8 +7,8 @@ export interface DataLink {
 export interface DataNode {
     id: string;
     group: string;
-    x: number;
-    y: number;
+    x?: number;
+    y?: number;
 }
 
 export interface DefaultForceDirectedGraph {

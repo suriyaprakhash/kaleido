@@ -108,8 +108,8 @@ const ForceDirectedGraph = ({ jsonData }: any) => {
                 .attr("y2", (d: any) => d.target.y);
 
             node
-                .attr("cx", d => d.x)
-                .attr("cy", d => d.y);
+                .attr("cx", d => d.x? d.x : 0)
+                .attr("cy", d => d.y? d.y : 0);
         }
 
         // Reheat the simulation when drag starts, and fix the subject position.

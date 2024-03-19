@@ -1,10 +1,32 @@
-import ForceDirectedGraph from "../diagrams/forceDirectedGraph";
+import { ActuatorType } from "../actuators/actuatorTypes";
+import { BeansJson } from "../actuators/endpoint-types/beansEndpoint";
+import { TypeConverter } from "../diagrams/TypeConverter";
+import { ToForceDirectedGraph } from "../diagrams/force-directed-graph/ToForceDirectedGraph";
+import ForceDirectedGraph from "../diagrams/force-directed-graph/forceDirectedGraph";
+import { DefaultForceDirectedGraph } from "../diagrams/force-directed-graph/forceDirectedGraphTypes";
 
 function Canvas({jsonData, actuatorType, parentCallback}: any) {
+
+  const forceDirectedGraphJsonData = convertJsonData(actuatorType, jsonData);
 
   function gotoDragAndDrop() {
     parentCallback(undefined)
   }
+
+  function convertJsonData(actuatorType: ActuatorType, jsonData: any): DefaultForceDirectedGraph {
+    if (actuatorType  === 'defaultForceDirectedGraph') {
+        return jsonData;
+    }
+    if (actuatorType === 'actuatorBeansJson') {
+      const typeConverter: TypeConverter<BeansJson, DefaultForceDirectedGraph> = new ToForceDirectedGraph();
+      return typeConverter.convert(jsonData);
+    }
+    return {
+      links: [],
+      nodes: []
+    };
+  }
+
 
   return (
     <section>
@@ -19,7 +41,7 @@ function Canvas({jsonData, actuatorType, parentCallback}: any) {
       </section>
       <h2>Canvas</h2>
       Determined actuator type {actuatorType}
-      <ForceDirectedGraph jsonData = {jsonData}/>
+      <ForceDirectedGraph jsonData = {forceDirectedGraphJsonData}/>
       {/* {nodeList} */}
     </section>
 
