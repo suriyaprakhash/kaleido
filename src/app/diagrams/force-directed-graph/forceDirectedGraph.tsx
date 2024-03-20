@@ -17,25 +17,20 @@ const ForceDirectedGraph = ({ jsonData }: any) => {
 
     // using useEffects to paint the ForceDirectedGraph
     useEffect(() => {
-        // const handleResize = () => {
-        //     // setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-        //     console.log('window resized');
-        //     createForceDirectedGraph(jsonData);
-        //   };
-      
-        // window.addEventListener("resize", handleResize);
         console.log("use Effects called")
         if (!initalized.current) {
             console.log("use Effects called - init")
             createForceDirectedGraph(jsonData);
             initalized.current = true;
-
-          
-              // Cleanup function to remove event listener on unmount
-            //   return () => window.removeEventListener("resize", handleResize);
         }
     }, [jsonData]);
 
+    /**
+     * The primary function thats gets called during useEffect
+     * 
+     * @param data 
+     * @returns 
+     */
     function createForceDirectedGraph(
         data: {
             links: DataLink[],
@@ -44,35 +39,19 @@ const ForceDirectedGraph = ({ jsonData }: any) => {
 
     ): SVGSVGElement | null {
 
-
-        // Create the SVG container.
+        // Select the SVG container.
         const svg: d3.Selection<SVGSVGElement | null, unknown, null, undefined> = d3.select(svgRef.current)
         // .attr("width", width).attr("height", height).attr("viewBox", [0, 0, width, height])
         // .attr("style", "max-width: 100%; height: auto");
 
-
-        // Dimensions
+        // Dimensions based on svg element size
         const svgNode: SVGSVGElement | null = svg.node();
         const width: number = svgNode?.clientWidth ?  svgNode?.clientWidth : 0;
         const height: number = svgNode?.clientHeight ? svgNode?.clientHeight : 0;
 
-
+        // Update the size on window resize
         svg.attr("width", width).attr("height", height).attr("viewBox", [0, 0, width, height])
          .attr("style", "max-width: 100%; height: auto");
-
-
-        const zoom = d3.zoom<any, any>();
-        zoom.on("zoom", zoomListener);
-
-        const zoomContainer: d3.Selection<SVGSVGElement | null, unknown, null, undefined> = svg.call(zoom);
-        zoomContainer.append('g');
-
-        function zoomListener(e: any) {
-            node
-            .attr('transform', e.transform);
-            link
-            .attr('transform', e.transform);
-        }
 
 
         // Specify the color scale.
@@ -82,16 +61,6 @@ const ForceDirectedGraph = ({ jsonData }: any) => {
         // so that re-evaluating this cell produces the same result.
         const links = data.links.map(d => ({ ...d }));
         const nodes = data.nodes.map(d => ({ ...d }));
-
-
-
-        // Create a simulation with several forces.
-        let simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id((d: any) => d.id))
-        .force("charge", d3.forceManyBody())
-        .force("center", d3.forceCenter(width / 2, height / 2))
-        .on("tick", ticked);
-
 
 
         // const svg = d3.create("svg")
@@ -123,6 +92,41 @@ const ForceDirectedGraph = ({ jsonData }: any) => {
         node.append("title")
             .text(d => d.id);
 
+        
+        // Create a simulation with several forces.
+        let simulation = d3.forceSimulation(nodes)
+        .force("link", d3.forceLink(links).id((d: any) => d.id))
+        .force("charge", d3.forceManyBody())
+        .force("center", d3.forceCenter(width / 2, height / 2))
+        .on("tick", ticked);
+
+        // Set the position attributes of links and nodes each time the simulation ticks.
+        function ticked() {
+            link
+                .attr("x1", (d: any) => d.source.x)
+                .attr("y1", (d: any) => d.source.y)
+                .attr("x2", (d: any) => d.target.x)
+                .attr("y2", (d: any) => d.target.y);
+
+            node
+                .attr("cx", d => d.x? d.x : 0)
+                .attr("cy", d => d.y? d.y : 0);
+        }    
+
+        // Add a zoom/pan behavior.
+        const zoom = d3.zoom<any, any>();
+        zoom.on("zoom", zoomListener);
+
+        const zoomContainer: d3.Selection<SVGSVGElement | null, unknown, null, undefined> = svg.call(zoom);
+        zoomContainer.append('g');
+
+        function zoomListener(e: any) {
+            node
+            .attr('transform', e.transform);
+            link
+            .attr('transform', e.transform);
+        }    
+
         // Add a drag behavior.
         // node.call(d3.drag()
         //     .on("start", dragstarted)
@@ -143,18 +147,6 @@ const ForceDirectedGraph = ({ jsonData }: any) => {
             });
         node.call(drag);
 
-        // Set the position attributes of links and nodes each time the simulation ticks.
-        function ticked() {
-            link
-                .attr("x1", (d: any) => d.source.x)
-                .attr("y1", (d: any) => d.source.y)
-                .attr("x2", (d: any) => d.target.x)
-                .attr("y2", (d: any) => d.target.y);
-
-            node
-                .attr("cx", d => d.x? d.x : 0)
-                .attr("cy", d => d.y? d.y : 0);
-        }
 
         // Reheat the simulation when drag starts, and fix the subject position.
         function dragstarted(event: any) {
@@ -186,22 +178,14 @@ const ForceDirectedGraph = ({ jsonData }: any) => {
     }
 
 
-
-    // const returnSvg = createForceDirectedGraph(jsonData);
-
     return (
         <section>
             <div>ForceDirectedGraph</div>
             <section className="flex flex-col border-8 border-red-100 p-2 text-center items-center">
-                <div className="camvas">
-                    <svg ref={svgRef} className="border-4 border-green-800 md:w-[800px] sm:h-[800px]">
-                    </svg>
-                </div>
+                <svg ref={svgRef} className="border-4 border-green-800 md:w-[800px] sm:h-[800px]">
+                </svg>
             </section>
-
    
-            {/* {createForceDirectedGraph(jsonData.links, jsonData.nodes.slice(0, 2))} */}
-            {/* {returnSvg} */}
             <section className="border-8 border-red-400 p-2">
                 {/* <button onClick={handleClick('/canvas')}>Show Canvas</button> */}
                 <div className="text-center items-center">
