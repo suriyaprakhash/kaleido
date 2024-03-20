@@ -28,7 +28,7 @@ export default function Page() {
 
   return (
 
-    <main className="flex flex-col border-8 border-blue-500">
+    <main className="flex flex-col border-8 border-blue-500 items-center">
       {/* <h1 className="font-bold text-red-700 text-2xl"> */}
       <section className="border-8 border-red-500 text-center items-center">
           Visualize your spring dependencies
@@ -45,7 +45,6 @@ export default function Page() {
         <Canvas jsonData = {jsonData} actuatorType = {actuatorType} parentCallback = {callbackFromCanvas}/>
       </section>
       }
-
 
     </main>
   );

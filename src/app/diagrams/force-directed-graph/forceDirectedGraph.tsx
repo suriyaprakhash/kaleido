@@ -3,6 +3,7 @@ import { D3DragEvent, color } from 'd3';
 import { link } from 'fs';
 import { useEffect, useRef, useState } from 'react';
 import { DataLink, DataNode } from './forceDirectedGraphTypes';
+import { Baloo_Da_2 } from 'next/font/google';
 
 const ForceDirectedGraph = ({ jsonData }: any) => {
     // this is for the counter
@@ -16,11 +17,22 @@ const ForceDirectedGraph = ({ jsonData }: any) => {
 
     // using useEffects to paint the ForceDirectedGraph
     useEffect(() => {
+        // const handleResize = () => {
+        //     // setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+        //     console.log('window resized');
+        //     createForceDirectedGraph(jsonData);
+        //   };
+      
+        // window.addEventListener("resize", handleResize);
         console.log("use Effects called")
         if (!initalized.current) {
             console.log("use Effects called - init")
             createForceDirectedGraph(jsonData);
             initalized.current = true;
+
+          
+              // Cleanup function to remove event listener on unmount
+            //   return () => window.removeEventListener("resize", handleResize);
         }
     }, [jsonData]);
 
@@ -31,9 +43,37 @@ const ForceDirectedGraph = ({ jsonData }: any) => {
         }
 
     ): SVGSVGElement | null {
+
+
+        // Create the SVG container.
+        const svg: d3.Selection<SVGSVGElement | null, unknown, null, undefined> = d3.select(svgRef.current)
+        // .attr("width", width).attr("height", height).attr("viewBox", [0, 0, width, height])
+        // .attr("style", "max-width: 100%; height: auto");
+
+
         // Dimensions
-        const width = 600;
-        const height = 600;
+        const svgNode: SVGSVGElement | null = svg.node();
+        const width: number = svgNode?.clientWidth ?  svgNode?.clientWidth : 0;
+        const height: number = svgNode?.clientHeight ? svgNode?.clientHeight : 0;
+
+
+        svg.attr("width", width).attr("height", height).attr("viewBox", [0, 0, width, height])
+         .attr("style", "max-width: 100%; height: auto");
+
+
+        const zoom = d3.zoom<any, any>();
+        zoom.on("zoom", zoomListener);
+
+        const zoomContainer: d3.Selection<SVGSVGElement | null, unknown, null, undefined> = svg.call(zoom);
+        zoomContainer.append('g');
+
+        function zoomListener(e: any) {
+            node
+            .attr('transform', e.transform);
+            link
+            .attr('transform', e.transform);
+        }
+
 
         // Specify the color scale.
         const color = d3.scaleOrdinal(d3.schemeCategory10);
@@ -43,15 +83,17 @@ const ForceDirectedGraph = ({ jsonData }: any) => {
         const links = data.links.map(d => ({ ...d }));
         const nodes = data.nodes.map(d => ({ ...d }));
 
-        // Create a simulation with several forces.
-        const simulation = d3.forceSimulation(nodes)
-            .force("link", d3.forceLink(links).id((d: any) => d.id))
-            .force("charge", d3.forceManyBody())
-            .force("center", d3.forceCenter(width / 2, height / 2))
-            .on("tick", ticked);
 
-        // Create the SVG container.
-        const svg = d3.select(svgRef.current).attr("width", width).attr("height", height).attr("viewBox", [0, 0, width, height]).attr("style", "max-width: 100%; height: auto;");
+
+        // Create a simulation with several forces.
+        let simulation = d3.forceSimulation(nodes)
+        .force("link", d3.forceLink(links).id((d: any) => d.id))
+        .force("charge", d3.forceManyBody())
+        .force("center", d3.forceCenter(width / 2, height / 2))
+        .on("tick", ticked);
+
+
+
         // const svg = d3.create("svg")
         //     .attr("width", width)
         //     .attr("height", height)
@@ -60,6 +102,7 @@ const ForceDirectedGraph = ({ jsonData }: any) => {
 
         // Add a line for each link, and a circle for each node.
         const link = svg.append("g")
+        // const link = zoomContainer
             .attr("stroke", "#999")
             .attr("stroke-opacity", 0.6)
             .selectAll()
@@ -68,6 +111,7 @@ const ForceDirectedGraph = ({ jsonData }: any) => {
             .attr("stroke-width", d => Math.sqrt(d.value));
 
         const node = svg.append("g")
+        // const node = zoomContainer
             .attr("stroke", "#fff")
             .attr("stroke-width", 1.5)
             .selectAll()
@@ -148,9 +192,14 @@ const ForceDirectedGraph = ({ jsonData }: any) => {
     return (
         <section>
             <div>ForceDirectedGraph</div>
-            <svg ref={svgRef} className="border-4 border-green-800 w-screen h-screen">
+            <section className="flex flex-col border-8 border-red-100 p-2 text-center items-center">
+                <div className="camvas">
+                    <svg ref={svgRef} className="border-4 border-green-800 md:w-[800px] sm:h-[800px]">
+                    </svg>
+                </div>
+            </section>
 
-            </svg>
+   
             {/* {createForceDirectedGraph(jsonData.links, jsonData.nodes.slice(0, 2))} */}
             {/* {returnSvg} */}
             <section className="border-8 border-red-400 p-2">
@@ -166,3 +215,5 @@ const ForceDirectedGraph = ({ jsonData }: any) => {
 }
 
 export default ForceDirectedGraph
+
+

@@ -39,8 +39,10 @@ function Canvas({jsonData, actuatorType, parentCallback}: any) {
           </button>
         </div>
       </section>
-      <h2>Canvas</h2>
-      Determined actuator type {actuatorType}
+      <section className="flex flex-col items-center">
+        <h2 >Canvas</h2>
+        Determined actuator type {actuatorType}
+      </section>
       <ForceDirectedGraph jsonData = {forceDirectedGraphJsonData}/>
       {/* {nodeList} */}
     </section>
