@@ -11,14 +11,14 @@ export interface DataNode {
     y?: number;
 }
 
-export interface DefaultForceDirectedGraph {
+export interface ForceDirectedGraphContainer {
     nodes: DataNode[];
     links: DataLink[];
 }
 
 
 export class DefaultForceDirectedGraphTypeGuard {
-    static isDefaultForceDirectedGraphTypeGuard(data: any): data is DefaultForceDirectedGraph {
+    static isDefaultForceDirectedGraphTypeGuard(data: any): data is ForceDirectedGraphContainer {
         // Type guard using type assertions and checks
         return (typeof data === 'object') && ('nodes' in data) && ('links' in data);
     }

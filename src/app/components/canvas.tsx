@@ -3,7 +3,7 @@ import { BeansJson } from "../actuators/endpoint-types/beansEndpoint";
 import { TypeConverter } from "../diagrams/TypeConverter";
 import { ToForceDirectedGraph } from "../diagrams/force-directed-graph/ToForceDirectedGraph";
 import ForceDirectedGraph from "../diagrams/force-directed-graph/forceDirectedGraph";
-import { DefaultForceDirectedGraph } from "../diagrams/force-directed-graph/forceDirectedGraphTypes";
+import { ForceDirectedGraphContainer } from "../diagrams/force-directed-graph/forceDirectedGraphTypes";
 
 function Canvas({jsonData, actuatorType, parentCallback}: any) {
 
@@ -13,12 +13,12 @@ function Canvas({jsonData, actuatorType, parentCallback}: any) {
     parentCallback(undefined)
   }
 
-  function convertJsonData(actuatorType: ActuatorType, jsonData: any): DefaultForceDirectedGraph {
+  function convertJsonData(actuatorType: ActuatorType, jsonData: any): ForceDirectedGraphContainer {
     if (actuatorType  === 'defaultForceDirectedGraph') {
         return jsonData;
     }
     if (actuatorType === 'actuatorBeansJson') {
-      const typeConverter: TypeConverter<BeansJson, DefaultForceDirectedGraph> = new ToForceDirectedGraph();
+      const typeConverter: TypeConverter<BeansJson, ForceDirectedGraphContainer> = new ToForceDirectedGraph();
       return typeConverter.convert(jsonData);
     }
     return {
@@ -30,21 +30,18 @@ function Canvas({jsonData, actuatorType, parentCallback}: any) {
 
   return (
     <section>
-      <section className="border-4 border-red-800 py-3 w-svw">
-        Menu bar section
-        <div className="float-right border-4 border-red-600  hover:animate-bounce">
-          {/* <Link href="/">Go Back</Link> */}
-          <button onClick={gotoDragAndDrop}>
-            Go Back
+      <section className="border-4 border-red-800">
+        <div  className="border-4 border-red-600">
+          <h2>Canvas</h2>
+          Determined actuator type {actuatorType}
+          <div>Select visulaization to switch</div>
+          <button className="bg-teal-600 rounded-lg p-5 w-auto" onClick={gotoDragAndDrop}>
+            <span className="p-2 text-white">Go Back</span>
           </button>
         </div>
-      </section>
-      <section className="flex flex-col items-center">
-        <h2 >Canvas</h2>
-        Determined actuator type {actuatorType}
+   
       </section>
       <ForceDirectedGraph jsonData = {forceDirectedGraphJsonData}/>
-      {/* {nodeList} */}
     </section>
 
   )

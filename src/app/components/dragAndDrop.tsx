@@ -119,8 +119,7 @@ export default function DragAndDrop({validationTypeFromParent, parentCallback}: 
   }
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      {/* <div className="flex flex-row"> */}
+    <div className="items-center">
       <form
         className={`${dragActive ? "bg-blue-400" : "bg-blue-100"
           }  p-8 w-2/3 rounded-lg  min-h-[10rem] text-center flex flex-col items-center justify-center 

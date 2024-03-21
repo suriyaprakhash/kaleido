@@ -28,16 +28,16 @@ export default function Page() {
 
   return (
 
-    <main className="flex flex-col border-8 border-blue-500 items-center">
+    <main className="">
       {/* <h1 className="font-bold text-red-700 text-2xl"> */}
-      <section className="border-8 border-red-500 text-center items-center">
+      <section className="border-8 border-red-500">
           Visualize your spring dependencies
           <h1>data gogg - check not getting applied</h1>
           {/* <button onClick={handleClick('/Canvas')}>Show Canvas</button> */}
       </section>
 
       {jsonData === undefined ? 
-      <section className="border-8 border-red-300 max-w-lg p-3">
+      <section className="border-8 border-red-300">
           <DragAndDrop validationTypeFromParent='json' parentCallback = {callbackFromDragAndDrop} />
       </section>
       :

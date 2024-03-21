@@ -1,7 +1,7 @@
-import { DefaultForceDirectedGraph, DefaultForceDirectedGraphTypeGuard } from "../diagrams/force-directed-graph/forceDirectedGraphTypes";
+import { ForceDirectedGraphContainer, DefaultForceDirectedGraphTypeGuard } from "../diagrams/force-directed-graph/forceDirectedGraphTypes";
 import { BeansJson, ActuatorBeansJsonTypeGuard } from "./endpoint-types/beansEndpoint";
 
-export function isDefaultForceDirectedGraphTypeGuard(data: any): data is DefaultForceDirectedGraph {
+export function isDefaultForceDirectedGraphTypeGuard(data: any): data is ForceDirectedGraphContainer {
    return DefaultForceDirectedGraphTypeGuard.isDefaultForceDirectedGraphTypeGuard(data);
 }
 

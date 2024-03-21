@@ -1,9 +1,9 @@
 import { BeansJson, Beans, BeanInfo } from "@/app/actuators/endpoint-types/beansEndpoint";
 import { TypeConverter } from "../TypeConverter";
-import { DataLink, DataNode, DefaultForceDirectedGraph } from "./forceDirectedGraphTypes";
+import { DataLink, DataNode, ForceDirectedGraphContainer } from "./forceDirectedGraphTypes";
 import { log } from "console";
 
-export class ToForceDirectedGraph extends TypeConverter<BeansJson, DefaultForceDirectedGraph> {
+export class ToForceDirectedGraph extends TypeConverter<BeansJson, ForceDirectedGraphContainer> {
 
     convert(data: BeansJson) {
 
@@ -43,7 +43,7 @@ export class ToForceDirectedGraph extends TypeConverter<BeansJson, DefaultForceD
 
         // const dataLink1: DataLink[] = [];
 
-        const defaultForceDirectedGraph: DefaultForceDirectedGraph = {
+        const defaultForceDirectedGraph: ForceDirectedGraphContainer = {
             links: dataLinks,
             nodes: dataNodes
         };

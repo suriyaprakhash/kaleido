@@ -2,10 +2,10 @@ import * as d3 from 'd3';
 import { D3DragEvent, color } from 'd3';
 import { link } from 'fs';
 import { useEffect, useRef, useState } from 'react';
-import { DataLink, DataNode } from './forceDirectedGraphTypes';
+import { DataLink, DataNode, ForceDirectedGraphContainer } from './forceDirectedGraphTypes';
 import { Baloo_Da_2 } from 'next/font/google';
 
-const ForceDirectedGraph = ({ jsonData }: any) => {
+const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContainer }) => {
     // this is for the counter
     const [count, setHello] = useState(0);
 
@@ -45,9 +45,11 @@ const ForceDirectedGraph = ({ jsonData }: any) => {
         // .attr("style", "max-width: 100%; height: auto");
 
         // Dimensions based on svg element size
-        const svgNode: SVGSVGElement | null = svg.node();
-        const width: number = svgNode?.clientWidth ?  svgNode?.clientWidth : 0;
-        const height: number = svgNode?.clientHeight ? svgNode?.clientHeight : 0;
+        // const svgNode: SVGSVGElement | null = svg.node();
+        // const width: number = svgNode?.clientWidth ?  svgNode?.clientWidth : 0;
+        // const height: number = svgNode?.clientHeight ? svgNode?.clientHeight : 0;
+        const width = 1600;
+        const height = 800;
 
         // Update the size on window resize
         svg.attr("width", width).attr("height", height).attr("viewBox", [0, 0, width, height])
@@ -179,21 +181,31 @@ const ForceDirectedGraph = ({ jsonData }: any) => {
 
 
     return (
-        <section>
+        <section className="border-8 border-orange-600">
             <div>ForceDirectedGraph</div>
-            <section className="flex flex-col border-8 border-red-100 p-2 text-center items-center">
-                <svg ref={svgRef} className="border-4 border-green-800 md:w-[800px] sm:h-[800px]">
-                </svg>
+            <section className="grid gap-4 border-8 border-red-100 p-2 sm:grid-cols-4">
+                {/* <svg ref={svgRef} className="border-4 border-green-800 md:w-[800px] sm:h-[800px]"> */}
+                <div className="sm:col-span-1 border-4 border-green-800">
+                    Data window
+                    <p>Total no.of nodes found - {jsonData.nodes.length}</p>
+                    <p>Total no.of dependencies found - {jsonData.links.length}</p>
+                </div>
+                <div className="sm:col-span-2 border-4 border-green-800 rounded-lg">
+                    <svg ref={svgRef} className="border-4 border-green-400 rounded-lg">
+                    </svg>
+                </div>
+                <div className="sm:col-span-1 border-4 border-green-800">
+                    Search Window
+                    
+                </div>
             </section>
    
-            <section className="border-8 border-red-400 p-2">
-                {/* <button onClick={handleClick('/canvas')}>Show Canvas</button> */}
+            {/* <section className="border-8 border-red-400 p-2">
                 <div className="text-center items-center">
                     <p>Click counter - You clicked {count} times</p>
                     <button onClick={() => setHello(count + 1)}>Click me</button>
                 </div>
-                {/* <Link href="/canvas">Show Canvas</Link> */}
-            </section>
+            </section> */}
         </section>
     )
 }
