@@ -31,7 +31,7 @@ function Canvas({jsonData, actuatorType, parentCallback}: any) {
   return (
     <section>
       <section className="border-4 border-red-800">
-        <div  className="border-4 border-red-600">
+        <div className="border-4 border-red-600 flex flex-col">
           <h2>Canvas</h2>
           Determined actuator type {actuatorType}
           <div>Select visulaization to switch</div>

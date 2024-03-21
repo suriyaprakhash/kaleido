@@ -28,10 +28,10 @@ export default function Page() {
 
   return (
 
-    <main className="">
+    <main className="flex flex-col">
       {/* <h1 className="font-bold text-red-700 text-2xl"> */}
       <section className="border-8 border-red-500">
-          Visualize your spring dependencies
+          MAIN - Visualize your spring dependencies
           <h1>data gogg - check not getting applied</h1>
           {/* <button onClick={handleClick('/Canvas')}>Show Canvas</button> */}
       </section>
