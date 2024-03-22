@@ -28,13 +28,11 @@ export default function Page() {
 
   return (
 
-    <main className="flex flex-col border-8 border-black">
-      {/* <h1 className="font-bold text-red-700 text-2xl"> */}
-      <section className="border-8 border-red-500">
+    <main className="flex flex-col border-8 border-black min-h-[80vh]">
+      {/* <section className="border-8 border-red-500">
           MAIN - Visualize your spring dependencies
           <h1>data gogg - check not getting applied</h1>
-          {/* <button onClick={handleClick('/Canvas')}>Show Canvas</button> */}
-      </section>
+      </section> */}
 
       {jsonData === undefined ? 
       <section className="border-8 border-red-300">

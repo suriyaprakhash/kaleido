@@ -122,7 +122,7 @@ export default function DragAndDrop({validationTypeFromParent, parentCallback}: 
     <div className="flex flex-col items-center m-4">
       <form
         className={`${dragActive ? "bg-blue-400" : "bg-blue-100"
-          }  p-8 w-2/3 rounded-lg  min-h-[20rem] sm:min-h-[40rem] text-center flex flex-col items-center justify-center 
+          }  p-8 w-2/3 h-[60vh] rounded-lg text-center flex flex-col items-center justify-center 
           hover:bg-blue-200 hover:animate-pulse`}
         onDragEnter={handleDragEnter}
         onSubmit={(e) => e.preventDefault()}

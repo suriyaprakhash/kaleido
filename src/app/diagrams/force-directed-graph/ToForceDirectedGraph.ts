@@ -12,15 +12,24 @@ export class ToForceDirectedGraph extends TypeConverter<BeansJson, ForceDirected
         const dataLinks: DataLink[] = [];
         const dependenciesMap: Map<string, string> = new Map(); 
         const contextMap: Map<string, Beans> = new Map(Object.entries(data.contexts));
+
+        const beanType: Map<string, number> = new Map();
+
+        let colorValueCounter: number = 0;
+
         contextMap.forEach((contextValue: Beans, contextName: string) => {
             // console.log(contextName);
             const beanMap: Map<string, BeanInfo> = new Map(Object.entries(contextValue.beans));
             beanMap.forEach((beanValue: BeanInfo, beanName: string) => {
                 // console.log(beanName);
                 // console.log(beanValue.dependencies);
+                colorValueCounter = colorValueCounter + 1
+                beanType.has(beanValue.type) ? beanType.get(beanValue.type) : beanType.set(beanValue.type, colorValueCounter + 1);
+                
                 dataNodes.push({
                     id: beanName,
-                    group: contextName
+                    group: beanType.get(beanValue.type)!,
+
                 });
                 beanValue.dependencies?.forEach((dependency: string) => {
                     if (beanMap.get(dependency) && beanMap.get(beanName)) {

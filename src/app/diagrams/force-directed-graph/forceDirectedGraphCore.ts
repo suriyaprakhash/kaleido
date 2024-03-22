@@ -9,6 +9,8 @@ export interface ForceDirectedGraphInput {
     jsonData: ForceDirectedGraphContainer,
     svgRef?: MutableRefObject<SVGSVGElement | null>,
     svgRefElementString?: string,
+    height?: number,
+    width?: number
 }
 
 export function clearAllSvgG() {
@@ -48,8 +50,8 @@ export function createForceDirectedGraph(
     // const svgNode: SVGSVGElement | null = svg.node();
     // const width: number = svgNode?.clientWidth ?  svgNode?.clientWidth : 0;
     // const height: number = svgNode?.clientHeight ? svgNode?.clientHeight : 0;
-    const width = 1600;
-    const height = 800;
+    const width = forceDirectedGraphInput.width ? forceDirectedGraphInput.width : 1600;
+    const height = forceDirectedGraphInput.height ? forceDirectedGraphInput.height : 1200;
 
     // Update the size on window resize
     svg.attr("width", width).attr("height", height).attr("viewBox", [0, 0, width, height])
@@ -93,7 +95,7 @@ export function createForceDirectedGraph(
         //     return node.id.includes('le')}
         // )
         .attr("r", 5)
-        .attr("fill", d => color(d.group));
+        .attr("fill", d => color(d.group + ''));
 
     node.append("title")
         .text(d => d.id);

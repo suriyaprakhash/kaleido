@@ -6,7 +6,7 @@ export interface DataLink {
 
 export interface DataNode {
     id: string;
-    group: string;
+    group: number;
     x?: number;
     y?: number;
 }

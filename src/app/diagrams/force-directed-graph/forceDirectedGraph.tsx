@@ -144,42 +144,40 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
 
     return (
         <section className="border-8 border-orange-600">
-            <div>ForceDirectedGraph</div>
+            
             <section className="grid gap-4 border-8 border-red-100 p-2 sm:grid-cols-4">
                 {/* <svg ref={svgRef} className="border-4 border-green-800 md:w-[800px] sm:h-[800px]"> */}
-                <div className="sm:col-span-1 border-4 border-green-800">
-                <div className="text-center">Data Window</div>
-                    <p>Nodes found - {tempJsonData.nodes.length}</p>
-                    <p>Links found - {tempJsonData.links.length}</p>
-                    {/* <div>
-                        {tempJsonData.nodes.map(node => <li>{node.id}</li>)}
-                    </div> */}
-                </div>
+                <div className="sm:col-span-1 border-4 border-green-800 grid grid-cols-2 p-4">
+                    <div className="text-center col-span-2">Data Window</div>
+                    <div className="col-span-2">ForceDirectedGraph</div>
+                    <div>
+                        <p>Nodes found - {tempJsonData.nodes.length}</p>
+                        <p>Links found - {tempJsonData.links.length}</p>
+                    </div>
+                    <div className="col-span-2">
+                        <h3 className="">NODES</h3>
+                        <ul className="list-disc overflow-y-auto h-56">
+                            {tempJsonData.nodes.map(node => <li>{node.id}</li>)}
+                        </ul>
+                    </div>
+                </div>    
                 <div className="sm:col-span-2 border-4 border-green-800 rounded-lg">
                     <svg ref={svgRef} className="border-4 border-green-400 rounded-lg">
                     </svg>
                 </div>
-                <div className="sm:col-span-1 border-4 border-green-800 grid sm:grid-col-2">
-                    <div className="text-center p-5">Search Window</div>
-                    <div className="relative p-5">
-                        {/* <label className="p-2 w-full">
-                            Node Search
-                        </label> */}
-                        <input className="p-2 w-3/4" placeholder="search" onChange={filterInputChange}/>
+                <div className="sm:col-span-1 border-4 border-green-800 grid grid-cols-2 p-4 h-1/2 ">
+                    <div className="col-span-2 text-center">Search Window</div>
+                    <div className="col-span-2 border-4 border-green-800">
+                        <input className="border-4 border-green-600 w-full" placeholder="search" onChange={filterInputChange}/>
                     </div>
-                    <div className="flex flex-row gap-2 p-5">
-                        <button className="bg-teal-600 rounded-lg" onClick={filterParentNodes}>
-                            <span className="p-2 text-white">Filter Depandents</span>
+                    <div className="col-span-2 grid grid-cols-2 gap-2 p-2">
+                        <button className="col-span-1 bg-teal-600 rounded-lg" onClick={filterParentNodes}>
+                            <span className="text-white">Filter Depandents</span>
                         </button>
-                        <button className="bg-teal-600 rounded-lg" onClick={filterChildNodes}>
+                        <button className="col-span-1 bg-teal-600 rounded-lg" onClick={filterChildNodes}>
                             <span className="p-2 text-white">Filter Child</span>
                         </button>
                     </div>
-                
-                    
-                    
-
-                    
                 </div>
             </section>
    
