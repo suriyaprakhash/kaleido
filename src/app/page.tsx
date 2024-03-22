@@ -28,7 +28,7 @@ export default function Page() {
 
   return (
 
-    <main className="flex flex-col">
+    <main className="flex flex-col border-8 border-black">
       {/* <h1 className="font-bold text-red-700 text-2xl"> */}
       <section className="border-8 border-red-500">
           MAIN - Visualize your spring dependencies

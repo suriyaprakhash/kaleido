@@ -12,18 +12,27 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
     // used to restrict the createForceDirectedGraph called twice due to React.strict in dev environment
     const initalized = useRef<boolean>(false);
 
+    const [tempJsonData, updateTempJsonData] = useState<ForceDirectedGraphContainer>(jsonData);
+    const [filterInput, setFilterInput] = useState<string>('');
+
     // this is reference object referred in the html tag
     const svgRef = useRef<SVGSVGElement | null>(null);
+    // let svg: d3.Selection<SVGSVGElement | null, unknown, null, undefined>;
+
+    // const [nodeIdFilter, setNodeIdFilter]= useState<string>('o');
 
     // using useEffects to paint the ForceDirectedGraph
     useEffect(() => {
         console.log("use Effects called")
         if (!initalized.current) {
-            console.log("use Effects called - init")
-            createForceDirectedGraph(jsonData);
+            console.log("use Effects called - init");
+            // this removes the existing nodes & link
+            d3.selectAll('svg g')?.remove();
+            // svg = createForceDirectedGraph(tempJsonData, svg);
+            createForceDirectedGraph(tempJsonData);
             initalized.current = true;
         }
-    }, [jsonData]);
+    }, [tempJsonData]);
 
     /**
      * The primary function thats gets called during useEffect
@@ -36,11 +45,11 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
             links: DataLink[],
             nodes: DataNode[]
         }
-
-    ): SVGSVGElement | null {
+    ): d3.Selection<SVGSVGElement | null, unknown, null, undefined> {
 
         // Select the SVG container.
         const svg: d3.Selection<SVGSVGElement | null, unknown, null, undefined> = d3.select(svgRef.current)
+        // svg = d3.select(svgRef.current);
         // .attr("width", width).attr("height", height).attr("viewBox", [0, 0, width, height])
         // .attr("style", "max-width: 100%; height: auto");
 
@@ -88,13 +97,18 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
             .selectAll()
             .data(nodes)
             .join("circle")
+            // .filter(node => {
+            //     console.log(node.id + ' - ' + node.id === 'Napoleon');
+            //     return node.id.includes('le')}
+            // )
             .attr("r", 5)
             .attr("fill", d => color(d.group));
 
         node.append("title")
             .text(d => d.id);
 
-        
+
+            
         // Create a simulation with several forces.
         let simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id((d: any) => d.id))
@@ -176,9 +190,58 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
         // stop naturally, but it’s a good practice.)
         // invalidation.then(() => simulation.stop());
 
-        return svg.node();
+        return svg;
     }
 
+    function filterInputChange(event: any): void {
+        setFilterInput(event.target.value);
+    }
+
+
+    function filterNodes(event: any): void {
+        // const filteredNodeId: string = event.target.value;
+
+        // hold the jsonData in the map for convinience 
+        const nodesMap: Map<string, DataNode> = new Map();
+        jsonData.nodes.forEach((node: DataNode) => nodesMap.set(node.id, node));
+
+        // filter the node based on the input from the UI
+        const filteredSoruceNodes: DataNode[] = jsonData.nodes.filter(node => node.id.toLocaleLowerCase().includes(filterInput.toLocaleLowerCase()))
+                                                        .map(filteredNodes => filteredNodes);
+
+        if (filteredSoruceNodes?.length > 0) {
+
+            // find all the dataLinks corresponding to the filteredNodes as a dependency for other nodes 
+            const filteredSourceDataLinks: DataLink[] = jsonData.links.filter(link => filteredSoruceNodes.filter(filterNode => link.source === filterNode.id).length > 0).map(link => link);
+
+            // const filteredSourceDataLinks: DataLink[] = jsonData.links.filter(link => link.source.includes(filteredNodeId)).map(link => link);
+
+            // find all the targetNode depandents for the filteredNode
+            const filteredTargetNodes: (DataNode | undefined)[] =  filteredSourceDataLinks.map(dataLink => nodesMap.get(dataLink.target));
+
+            // All the filteredNode soruce parent along with all the targetNode dependencies
+            // Set used - to filter duplicates  
+            let combinedSourceAndTargetNodes: Set<DataNode> = new Set();
+            filteredTargetNodes.forEach(targetNode => {
+                if (targetNode) {
+                    combinedSourceAndTargetNodes.add(targetNode);
+                }
+            })
+
+            filteredSoruceNodes.forEach(soruceNode => {
+                combinedSourceAndTargetNodes.add(soruceNode)
+            })
+            
+            // this update will re-trigger the useEffects as tempJsonData is its dependency 
+            updateTempJsonData({
+                nodes: Array.from(combinedSourceAndTargetNodes),
+                links: filteredSourceDataLinks
+            });
+
+            initalized.current = false;
+
+        }
+    }
 
     return (
         <section className="border-8 border-orange-600">
@@ -186,16 +249,35 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
             <section className="grid gap-4 border-8 border-red-100 p-2 sm:grid-cols-4">
                 {/* <svg ref={svgRef} className="border-4 border-green-800 md:w-[800px] sm:h-[800px]"> */}
                 <div className="sm:col-span-1 border-4 border-green-800">
-                    Data window
-                    <p>Total no.of nodes found - {jsonData.nodes.length}</p>
-                    <p>Total no.of dependencies found - {jsonData.links.length}</p>
+                <div className="text-center">Data Window</div>
+                    <p>Nodes found - {tempJsonData.nodes.length}</p>
+                    <p>Links found - {tempJsonData.links.length}</p>
+                    {/* <div>
+                        {tempJsonData.nodes.map(node => <li>{node.id}</li>)}
+                    </div> */}
                 </div>
                 <div className="sm:col-span-2 border-4 border-green-800 rounded-lg">
                     <svg ref={svgRef} className="border-4 border-green-400 rounded-lg">
                     </svg>
                 </div>
-                <div className="sm:col-span-1 border-4 border-green-800">
-                    Search Window
+                <div className="sm:col-span-1 border-4 border-green-800 grid sm:grid-col-2 items-center">
+                    <div className="text-center">Search Window</div>
+                    <div className="relative w-full h-16">
+                        <input className="peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-teal-500"
+                        placeholder="" onChange={filterInputChange}/>
+                        <label className="flex w-full h-full select-none pointer-events-none absolute left-0 font-normal !overflow-visible truncate peer-placeholder-shown:text-blue-gray-500 leading-tight peer-focus:leading-tight peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 transition-all -top-1.5 peer-placeholder-shown:text-sm text-[11px] peer-focus:text-[11px] before:content[' '] before:block before:box-border before:w-2.5 before:h-1.5 before:mt-[6.5px] before:mr-1 peer-placeholder-shown:before:border-transparent before:rounded-tl-md before:border-t peer-focus:before:border-t-2 before:border-l peer-focus:before:border-l-2 before:pointer-events-none before:transition-all peer-disabled:before:border-transparent after:content[' '] after:block after:flex-grow after:box-border after:w-2.5 after:h-1.5 after:mt-[6.5px] after:ml-1 peer-placeholder-shown:after:border-transparent after:rounded-tr-md after:border-t peer-focus:after:border-t-2 after:border-r peer-focus:after:border-r-2 after:pointer-events-none after:transition-all peer-disabled:after:border-transparent peer-placeholder-shown:leading-[3.75] text-blue-gray-400 peer-focus:text-teal-500 before:border-blue-gray-200 peer-focus:before:!border-teal-500 after:border-blue-gray-200 peer-focus:after:!border-teal-500">
+                            Parent Node Search
+                        </label>
+                    </div>
+                    <div className="">
+                        <button className="bg-teal-600 rounded-lg p-5 w-full" onClick={filterNodes}>
+                            <span className="p-2 text-white">Filter</span>
+                        </button>
+                    </div>
+                
+                    
+                    
+
                     
                 </div>
             </section>
