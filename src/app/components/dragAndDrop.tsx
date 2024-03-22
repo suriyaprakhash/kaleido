@@ -120,7 +120,7 @@ export default function DragAndDrop({validationTypeFromParent, parentCallback}: 
 
   return (
     <div className="flex flex-col items-center m-4">
-      <form
+      <form onClick={openFileExplorer}
         className={`${dragActive ? "bg-blue-400" : "bg-blue-100"
           }  p-8 w-2/3 h-[60vh] rounded-lg text-center flex flex-col items-center justify-center 
           hover:bg-blue-200 hover:animate-pulse`}
@@ -141,7 +141,7 @@ export default function DragAndDrop({validationTypeFromParent, parentCallback}: 
           accept=".json"
         />
 
-        <p onClick={openFileExplorer}>
+        <p   className="text-gray-500">
           Drag & Drop files or
           Select files
           to upload
