@@ -154,10 +154,10 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
                         <p>Nodes found - {tempJsonData.nodes.length}</p>
                         <p>Links found - {tempJsonData.links.length}</p>
                     </div>
-                    <div className="col-span-2">
+                    <div className="col-span-2 hidden lg:block">
                         <h3 className="">NODES</h3>
                         <ul className="list-disc overflow-y-auto h-56">
-                            {tempJsonData.nodes.map(node => <li>{node.id}</li>)}
+                            {tempJsonData.nodes.map(node => <li key={node.id}>{node.id}</li>)}
                         </ul>
                     </div>
                 </div>    
