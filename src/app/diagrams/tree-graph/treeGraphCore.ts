@@ -63,6 +63,13 @@ export function createTreeGraph(
     // Compute the extent of the tree. Note that x and y are swapped here
     // because in the tree layout, x is the breadth, but when displayed, the
     // tree extends right rather than down.
+    // let x0 = Infinity;
+    // let x1 = -x0;
+    // root.each((d: any) => {
+    //     if (d.x > x1) x1 = d.x;
+    //     if (d.x < x0) x0 = d.x;
+    // });
+
     let x0 = Infinity;
     let x1 = -x0;
     root.each((d: any) => {
@@ -77,7 +84,7 @@ export function createTreeGraph(
         .attr("height", height)
         .attr("viewBox", [-dy / 3, x0 - dx, width, height])
         // .attr("viewBox", [dy, dx, width, height])
-        .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
+        .attr("style", "max-width: 100%; height: auto; font: 18px sans-serif;");
     // .attr("viewBox", [0, 0, width, height])
     // Update the size on window resize
     // svg.attr("width", width).attr("height", height).attr("viewBox", [0, 0, width, height])
@@ -95,13 +102,23 @@ export function createTreeGraph(
 
     const link = container.append("g")
         .attr("fill", "none")
-        .attr("stroke", "#555")
+        .attr("stroke", "#009fb8")
         .attr("stroke-opacity", 0.4)
-        .attr("stroke-width", 1.5)
+        .attr("stroke-width", 5)
         .selectAll()
         .data(root.links())
         .join("path")
-        .attr("d", linkHorizontal);
+        .attr("d", linkHorizontal)
+        .on('mouseover', function (d, i) {
+            d3.select(this).transition()
+                 .duration(3)
+                 .attr("stroke-width", 10);
+        })
+        .on('mouseout', function (d, i) {
+            d3.select(this).transition()
+                 .duration(2)
+                 .attr("stroke-width", 5);
+       });
 
     const node = container.append("g")
         .attr("stroke-linejoin", "round")
@@ -115,8 +132,18 @@ export function createTreeGraph(
         });
 
     node.append("circle")
-        .attr("fill", (d: any) => d.children ? "#555" : "#999")
-        .attr("r", 20);
+        .attr("fill", (d: any) => d.children ? "#00b834" : "#b80000")
+        .attr("r", 20)
+        .on('mouseover', function (d, i) {
+            d3.select(this).transition()
+                 .duration(3)
+                 .attr("r", 30);
+        })
+        .on('mouseout', function (d, i) {
+            d3.select(this).transition()
+                 .duration(2)
+                 .attr("r", 20);
+       });
 
     node.append("text")
         .attr("dy", "0.31em")
@@ -124,9 +151,20 @@ export function createTreeGraph(
         .attr("text-anchor", (d: any) => d.children ? "end" : "start")
         .text((d: any) => d.data.name)
         .attr("stroke", "white")
-        .attr("paint-order", "stroke");
+        .attr("paint-order", "stroke")
+        .on('mouseover', function (d, i) {
+            d3.select(this).transition()
+                 .duration(3)
+                 .attr("style", "font: 36px sans-serif;");
+        })
+        .on('mouseout', function (d, i) {
+            d3.select(this).transition()
+                 .duration(2)
+                 .attr("style", "font: 18px sans-serif;");
+       });
 
 
+    node
     // Add a zoom/pan behavior.
     const zoom = d3.zoom<any, any>();
     zoom.on("zoom", zoomListener);
@@ -159,6 +197,15 @@ export function createTreeGraph(
         //     );    
         container
             .attr('transform', e.transform);
+        // node.attr("transform", (event: any, d: any) => {
+        //     return `translate(${event.y + e.transform.x},${event.x + e.transform.y})`
+        // });
+        // link.attr("transform", (event: any, d: any) => {
+        //     return `translate(${e.transform.x},${e.transform.y})`;
+        // });
+        // link.attr("transform", (event: any, d: any) => {
+        //     return `translate(${e.transform.x},${ e.transform.y})`;
+        // });
     }
 
     return svg;
