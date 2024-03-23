@@ -2,7 +2,7 @@ import d3 from 'd3';
 import React, { useEffect, useRef } from 'react'
 import { clearAllSvgG, createTreeGraph } from './treeGraphCore';
 
-const treeGraph = ({ jsonData }: any) => {
+const TreeGraph = ({ jsonData }: any) => {
 
   // used to restrict the createForceDirectedGraph called twice due to React.strict in dev environment
   const initalized = useRef<boolean>(false);
@@ -36,5 +36,5 @@ const treeGraph = ({ jsonData }: any) => {
   )
 }
 
-export default treeGraph
+export default TreeGraph
 
