@@ -14,7 +14,7 @@ export interface TreeGraphInput {
 
 export function clearAllSvgG() {
     // this removes the existing nodes & link
-    d3.selectAll('g')?.remove();
+    d3.selectAll('svg g')?.remove();
 }
 
 
@@ -50,7 +50,7 @@ export function createTreeGraph(
     // Compute the tree height; this approach will allow the height of the
     // SVG to scale according to the breadth (width) of the tree layout.
     const root: any = d3.hierarchy(data);
-    const dx = 10;
+    const dx = 50;
     const dy = width / (root.height + 1);
 
     // Create a tree layout.
@@ -71,23 +71,25 @@ export function createTreeGraph(
     });
 
     // Compute the adjusted height of the tree.
-    const height = x1 - x0 + dx * 2;
-
+    const height = (x1 - x0 + dx * 2) > 1600 ? 800 : 800;
 
     svg.attr("width", width)
         .attr("height", height)
         .attr("viewBox", [-dy / 3, x0 - dx, width, height])
-        // .attr("viewBox", [0, 0, width, height])
+        // .attr("viewBox", [dy, dx, width, height])
         .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
-        // Update the size on window resize
-        // svg.attr("width", width).attr("height", height).attr("viewBox", [0, 0, width, height])
-        // .attr("style", "max-width: 100%; height: auto");
-   
-   
+    // .attr("viewBox", [0, 0, width, height])
+    // Update the size on window resize
+    // svg.attr("width", width).attr("height", height).attr("viewBox", [0, 0, width, height])
+    // .attr("style", "max-width: 100%; height: auto");
+
+
 
     const linkHorizontal: any = d3.linkHorizontal()
         .x((d: any) => d.y)
         .y((d: any) => d.x);
+
+
 
     const container = svg.append("g");
 
@@ -101,7 +103,7 @@ export function createTreeGraph(
         .join("path")
         .attr("d", linkHorizontal);
 
-    let node = container.append("g")
+    const node = container.append("g")
         .attr("stroke-linejoin", "round")
         .attr("stroke-width", 3)
         .selectAll()
@@ -114,30 +116,49 @@ export function createTreeGraph(
 
     node.append("circle")
         .attr("fill", (d: any) => d.children ? "#555" : "#999")
-        .attr("r", 5);
+        .attr("r", 20);
 
     node.append("text")
         .attr("dy", "0.31em")
-        .attr("x", (d: any) => d.children ? -6 : 6)
+        .attr("x", (d: any) => d.children ? -25 : 25)
         .attr("text-anchor", (d: any) => d.children ? "end" : "start")
         .text((d: any) => d.data.name)
         .attr("stroke", "white")
         .attr("paint-order", "stroke");
 
+
     // Add a zoom/pan behavior.
     const zoom = d3.zoom<any, any>();
     zoom.on("zoom", zoomListener);
 
-    const zoomContainer: d3.Selection<SVGSVGElement | null, unknown, (null | HTMLElement), undefined> = svg.call(zoom);
-    zoomContainer.append('g');
+    // const zoomContainer: d3.Selection<SVGSVGElement | null, unknown, (null | HTMLElement), undefined> = 
+    // if ((x1 - x0 + dx * 2) > 800) {
+    //     svg.call(zoom);
+    // } else {
+    //     container.call(zoom);
+    // }
+    svg.call(zoom);
 
-    function zoomListener(e: any) { 
-        // node.attr("transform", (d: any) => {
-        //     return `translate(${d.y + e.transform.x},${d.x + e.transform.y})scale(${e.transform.k})`;
-        // });
-        // link
-        //     .attr('transform', e.transform);
-        container.attr('transform', e.transform);
+    // zoomContainer.append('g');
+
+    function zoomListener(e: any) {
+        // node
+        //     .attr('transform', (d: any) => {
+        //         return `translate(${d.y + e.transform.x},${d.x + e.transform.y})`;
+        //     });
+
+        //  link
+        //     .attr('transform', (d: any) =>{
+        //         console.log(d.source.x)
+        //         return `translate(${d.source.y + e.transform.x},${d.source.x + e.transform.y})`;
+        //     });
+
+        //     link
+        //     .attr('transform', (d: any) => 
+        //         `translate(${d.target.y + e.transform.x},${d.target.x + e.transform.y})`
+        //     );    
+        container
+            .attr('transform', e.transform);
     }
 
     return svg;

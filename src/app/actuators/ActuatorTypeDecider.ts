@@ -18,7 +18,7 @@ export class ActuatorTypeDecider {
             actuatorTypes = 'defaultTreeGraph';
         }
 
-        console.log('decided - ' +actuatorTypes, jsonData);
+        console.log('decided input json type - ' +actuatorTypes, jsonData);
 
         // if (jsonData instanceof DefaultForceDirectedGraph) {
         //     return 'defaultForceDirectedGraph';

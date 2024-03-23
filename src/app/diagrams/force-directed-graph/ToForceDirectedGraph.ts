@@ -1,20 +1,20 @@
-import { BeansJson, Beans, BeanInfo } from "@/app/actuators/endpoint-types/beansEndpoint";
+import { BeanInfo } from "@/app/actuators/actuatorTypes";
+import { BeansJson, Beans } from "@/app/actuators/endpoint-types/beansEndpointTypes";
 import { TypeConverter } from "../TypeConverter";
 import { DataLink, DataNode, ForceDirectedGraphContainer } from "./forceDirectedGraphTypes";
 import { log } from "console";
 
 export class ToForceDirectedGraph extends TypeConverter<BeansJson, ForceDirectedGraphContainer> {
 
-    convert(data: BeansJson) {
+    convert(data: BeansJson): ForceDirectedGraphContainer {
 
         const dataNodes: DataNode[] = [];
-
         const dataLinks: DataLink[] = [];
-        const dependenciesMap: Map<string, string> = new Map(); 
+
         const contextMap: Map<string, Beans> = new Map(Object.entries(data.contexts));
 
-        const beanType: Map<string, number> = new Map();
-
+        // this is primarily for the color
+        const beanTypeForColor: Map<string, number> = new Map();
         let colorValueCounter: number = 0;
 
         contextMap.forEach((contextValue: Beans, contextName: string) => {
@@ -24,11 +24,11 @@ export class ToForceDirectedGraph extends TypeConverter<BeansJson, ForceDirected
                 // console.log(beanName);
                 // console.log(beanValue.dependencies);
                 colorValueCounter = colorValueCounter + 1
-                beanType.has(beanValue.type) ? beanType.get(beanValue.type) : beanType.set(beanValue.type, colorValueCounter + 1);
+                beanTypeForColor.has(beanValue.type) ? beanTypeForColor.get(beanValue.type) : beanTypeForColor.set(beanValue.type, colorValueCounter + 1);
                 
                 dataNodes.push({
                     id: beanName,
-                    group: beanType.get(beanValue.type)!,
+                    group: beanTypeForColor.get(beanValue.type)!,
 
                 });
                 beanValue.dependencies?.forEach((dependency: string) => {

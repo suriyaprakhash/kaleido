@@ -7,14 +7,15 @@ import ForceDirectedGraph from "../diagrams/force-directed-graph/forceDirectedGr
 import { ForceDirectedGraphContainer } from "../diagrams/force-directed-graph/forceDirectedGraphTypes";
 import TreeGraph from "../diagrams/tree-graph/treeGraph";
 import { TreeGraphNode } from "../diagrams/tree-graph/treeGraphTypes";
+import { ToTreeGraph } from "../diagrams/tree-graph/ToTreeGraph";
 
-function Canvas({ jsonData, actuatorType, parentCallback }: any) {
-
-  const forceDirectedGraphJsonData = convertJsonData(actuatorType, jsonData);
+function Canvas({ actualJsonData, actuatorType, parentCallback }: any) {
 
   // check the type as id in span
-  type selctionType = 'force' | 'tree' | '';
+  type SelctionType = 'force' | 'tree' | '';
 
+  // this function is a TEMP to default - defaultJsons to their respective places
+  // BeanJson will always go to 'force'
   function initSelction(actuatorType: ActuatorType) {
     if (actuatorType === 'defaultTreeGraph') {
       return 'tree'
@@ -23,22 +24,31 @@ function Canvas({ jsonData, actuatorType, parentCallback }: any) {
     }
   }
 
-  const [selection, setSelection] = useState<selctionType>(initSelction(actuatorType));
+  // diagram selection type based on the dropDown
+  const [selection, setSelection] = useState<SelctionType>(initSelction(actuatorType));
+  // this holds the input prop for the diagrams, initial setter
+  let convertedJsonData = convertJsonData(actuatorType, actualJsonData, selection);
 
   function gotoDragAndDrop() {
     parentCallback(undefined)
   }
 
-  function convertJsonData(actuatorType: ActuatorType, jsonData: any): ForceDirectedGraphContainer {
+  function convertJsonData(actuatorType: ActuatorType, actualJsonData: any, selectionType: SelctionType): ForceDirectedGraphContainer | TreeGraphNode {
     if (actuatorType === 'defaultForceDirectedGraph') {
-      return jsonData;
-    }
-    if (actuatorType === 'actuatorBeansJson') {
-      const typeConverter: TypeConverter<BeansJson, ForceDirectedGraphContainer> = new ToForceDirectedGraph();
-      return typeConverter.convert(jsonData);
+      return actualJsonData;
     }
     if (actuatorType === 'defaultTreeGraph') {
-      return jsonData;
+      return actualJsonData;
+    }
+    if (actuatorType === 'actuatorBeansJson') {
+      if (selectionType === 'force') {
+        const typeConverter: TypeConverter<BeansJson, ForceDirectedGraphContainer> = new ToForceDirectedGraph();
+        return typeConverter.convert(actualJsonData);
+      }
+      if (selectionType === 'tree') {
+        const typeConverter: TypeConverter<BeansJson, TreeGraphNode> = new ToTreeGraph();
+        return typeConverter.convert(actualJsonData);
+      }
     }
     return {
       links: [],
@@ -50,6 +60,9 @@ function Canvas({ jsonData, actuatorType, parentCallback }: any) {
     console.log('Selected - ' + event.target.id);
     // the following condition avoids changing the state when user did not click on the HTML element with id
     if (event.target.id === 'force' || event.target.id === 'tree') {
+      // convert the jsonData before the selection triggers in
+      convertedJsonData = convertJsonData(actuatorType, actualJsonData, event.target.id);
+      // update selection to render the diagram accordingly
       setSelection(event.target.id);
     }
   }
@@ -103,11 +116,11 @@ function Canvas({ jsonData, actuatorType, parentCallback }: any) {
       {(() => {
         if (selection === 'force') {
           return (
-            <ForceDirectedGraph jsonData={forceDirectedGraphJsonData} />
+            <ForceDirectedGraph jsonData={convertedJsonData as ForceDirectedGraphContainer} />
           )
         } else if (selection === 'tree') {
           return (
-            <TreeGraph jsonData={forceDirectedGraphJsonData} />
+            <TreeGraph convertedJsonData={convertedJsonData as TreeGraphNode} actualJsonData = {actualJsonData}/>
           )
         } 
         // else {

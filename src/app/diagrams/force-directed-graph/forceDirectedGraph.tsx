@@ -145,6 +145,7 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
             
             <section className="grid gap-4 border-8 border-red-100 p-2 sm:grid-cols-4">
                 {/* <svg ref={svgRef} className="border-4 border-green-800 md:w-[800px] sm:h-[800px]"> */}
+                
                 <div className="sm:col-span-1 border-4 border-green-800 grid grid-cols-2 p-4">
                     <div className="text-center col-span-2">Data Window</div>
                     <div className="col-span-2">ForceDirectedGraph</div>
@@ -158,11 +159,13 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
                             {tempJsonData.nodes.map(node => <li key={node.id}>{node.id}</li>)}
                         </ul>
                     </div>
-                </div>    
+                </div>
+    
                 <div className="sm:col-span-2 border-4 border-green-800 rounded-lg">
                     <svg ref={svgRef} className="border-4 border-green-400 rounded-lg">
                     </svg>
                 </div>
+
                 <div className="sm:col-span-1 border-4 border-green-800 grid grid-cols-2 p-4 h-1/2 ">
                     <div className="col-span-2 text-center">Search Window</div>
                     <div className="col-span-2 border-4 border-green-800">
@@ -176,7 +179,8 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
                             <span className="p-2 text-white">Filter Child</span>
                         </button>
                     </div>
-                </div>
+                </div>  
+
             </section>
    
             {/* <section className="border-8 border-red-400 p-2">

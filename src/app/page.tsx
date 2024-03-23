@@ -40,7 +40,7 @@ export default function Page() {
       </section>
       :
       <section>
-        <Canvas jsonData = {jsonData} actuatorType = {actuatorType} parentCallback = {callbackFromCanvas}/>
+        <Canvas actualJsonData = {jsonData} actuatorType = {actuatorType} parentCallback = {callbackFromCanvas}/>
       </section>
       }
 
