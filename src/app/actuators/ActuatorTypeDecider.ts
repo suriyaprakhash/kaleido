@@ -1,5 +1,5 @@
 import { ActuatorType } from './actuatorTypes';
-import { isActuatorBeansJson, isDefaultForceDirectedGraphTypeGuard } from './globalActuatorTypeGuard';
+import { isActuatorBeansJsonGuard as isActuatorBeansJsonGuard, isDefaultForceDirectedGraphTypeGuard, isDefaultTreeGraphTypeGuard } from './globalActuatorTypeGuard';
 
 export class ActuatorTypeDecider {
 
@@ -10,10 +10,15 @@ export class ActuatorTypeDecider {
             actuatorTypes = 'defaultForceDirectedGraph';
         }
 
-        if(isActuatorBeansJson(jsonData)) {
+        if(isActuatorBeansJsonGuard(jsonData)) {
             actuatorTypes = 'actuatorBeansJson';
         }
-        console.log('decide', jsonData);
+
+        if(isDefaultTreeGraphTypeGuard(jsonData)) {
+            actuatorTypes = 'defaultTreeGraph';
+        }
+
+        console.log('decided - ' +actuatorTypes, jsonData);
 
         // if (jsonData instanceof DefaultForceDirectedGraph) {
         //     return 'defaultForceDirectedGraph';

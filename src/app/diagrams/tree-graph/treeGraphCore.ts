@@ -1,0 +1,144 @@
+import * as d3 from 'd3';
+import { MutableRefObject } from "react";
+import { ForceDirectedGraphInput } from "../force-directed-graph/forceDirectedGraphCore";
+import { ForceDirectedGraphContainer } from "../force-directed-graph/forceDirectedGraphTypes";
+import { TreeGraphNode } from "./treeGraphTypes";
+
+export interface TreeGraphInput {
+    jsonData: TreeGraphNode,
+    svgRef?: MutableRefObject<SVGSVGElement | null>,
+    svgRefElementString?: string,
+    height?: number,
+    width?: number
+}
+
+export function clearAllSvgG() {
+    // this removes the existing nodes & link
+    d3.selectAll('g')?.remove();
+}
+
+
+/**
+     * The primary function thats gets called during useEffect
+     * 
+     * @param data 
+     * @returns 
+     */
+export function createTreeGraph(
+    treeGraphInput: TreeGraphInput
+): d3.Selection<SVGSVGElement | null, unknown, (null | HTMLElement), undefined> {
+
+    const data: TreeGraphNode = treeGraphInput.jsonData;
+    const svgRef: MutableRefObject<SVGSVGElement | null> = treeGraphInput.svgRef!;
+    const svgRefElementString: string = treeGraphInput.svgRefElementString!;
+
+    // Select the SVG container.
+    let svg: d3.Selection<SVGSVGElement | null, unknown, (null | HTMLElement), undefined>;
+    if (svgRef) {
+        svg = d3.select(svgRef.current);
+    }
+    else {
+        svg = d3.select(svgRefElementString);
+    }
+
+    const width = treeGraphInput.width ? treeGraphInput.width : 1600;
+
+    // Specify the color scale.
+    const color = d3.scaleOrdinal(d3.schemeCategory10);
+
+
+    // Compute the tree height; this approach will allow the height of the
+    // SVG to scale according to the breadth (width) of the tree layout.
+    const root: any = d3.hierarchy(data);
+    const dx = 10;
+    const dy = width / (root.height + 1);
+
+    // Create a tree layout.
+    const tree = d3.cluster().nodeSize([dx, dy]);
+
+    // Sort the tree and apply the layout.
+    root.sort((a: any, b: any) => d3.ascending(a.data.name, b.data.name));
+    tree(root);
+
+    // Compute the extent of the tree. Note that x and y are swapped here
+    // because in the tree layout, x is the breadth, but when displayed, the
+    // tree extends right rather than down.
+    let x0 = Infinity;
+    let x1 = -x0;
+    root.each((d: any) => {
+        if (d.x > x1) x1 = d.x;
+        if (d.x < x0) x0 = d.x;
+    });
+
+    // Compute the adjusted height of the tree.
+    const height = x1 - x0 + dx * 2;
+
+
+    svg.attr("width", width)
+        .attr("height", height)
+        .attr("viewBox", [-dy / 3, x0 - dx, width, height])
+        // .attr("viewBox", [0, 0, width, height])
+        .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
+        // Update the size on window resize
+        // svg.attr("width", width).attr("height", height).attr("viewBox", [0, 0, width, height])
+        // .attr("style", "max-width: 100%; height: auto");
+   
+   
+
+    const linkHorizontal: any = d3.linkHorizontal()
+        .x((d: any) => d.y)
+        .y((d: any) => d.x);
+
+    const container = svg.append("g");
+
+    const link = container.append("g")
+        .attr("fill", "none")
+        .attr("stroke", "#555")
+        .attr("stroke-opacity", 0.4)
+        .attr("stroke-width", 1.5)
+        .selectAll()
+        .data(root.links())
+        .join("path")
+        .attr("d", linkHorizontal);
+
+    let node = container.append("g")
+        .attr("stroke-linejoin", "round")
+        .attr("stroke-width", 3)
+        .selectAll()
+        .data(root.descendants())
+        .join("g")
+        // .attr("transform", (d: any) => `translate(${d.y},${d.x})`);
+        .attr("transform", (d: any) => {
+            return `translate(${d.y},${d.x})`;
+        });
+
+    node.append("circle")
+        .attr("fill", (d: any) => d.children ? "#555" : "#999")
+        .attr("r", 5);
+
+    node.append("text")
+        .attr("dy", "0.31em")
+        .attr("x", (d: any) => d.children ? -6 : 6)
+        .attr("text-anchor", (d: any) => d.children ? "end" : "start")
+        .text((d: any) => d.data.name)
+        .attr("stroke", "white")
+        .attr("paint-order", "stroke");
+
+    // Add a zoom/pan behavior.
+    const zoom = d3.zoom<any, any>();
+    zoom.on("zoom", zoomListener);
+
+    const zoomContainer: d3.Selection<SVGSVGElement | null, unknown, (null | HTMLElement), undefined> = svg.call(zoom);
+    zoomContainer.append('g');
+
+    function zoomListener(e: any) { 
+        // node.attr("transform", (d: any) => {
+        //     return `translate(${d.y + e.transform.x},${d.x + e.transform.y})scale(${e.transform.k})`;
+        // });
+        // link
+        //     .attr('transform', e.transform);
+        container.attr('transform', e.transform);
+    }
+
+    return svg;
+}

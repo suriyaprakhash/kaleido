@@ -7,8 +7,6 @@ import { Baloo_Da_2 } from 'next/font/google';
 import { clearAllSvgG, createForceDirectedGraph } from './forceDirectedGraphCore';
 
 const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContainer }) => {
-    // this is for the counter
-    const [count, setHello] = useState(0);
 
     // used to restrict the createForceDirectedGraph called twice due to React.strict in dev environment
     const initalized = useRef<boolean>(false);

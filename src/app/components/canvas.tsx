@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { ActuatorType } from "../actuators/actuatorTypes";
-import { BeansJson } from "../actuators/endpoint-types/beansEndpoint";
+import { BeansJson } from "../actuators/endpoint-types/beansEndpointTypes";
 import { TypeConverter } from "../diagrams/TypeConverter";
 import { ToForceDirectedGraph } from "../diagrams/force-directed-graph/ToForceDirectedGraph";
 import ForceDirectedGraph from "../diagrams/force-directed-graph/forceDirectedGraph";
 import { ForceDirectedGraphContainer } from "../diagrams/force-directed-graph/forceDirectedGraphTypes";
 import TreeGraph from "../diagrams/tree-graph/treeGraph";
+import { TreeGraphNode } from "../diagrams/tree-graph/treeGraphTypes";
 
 function Canvas({ jsonData, actuatorType, parentCallback }: any) {
 
@@ -14,7 +15,15 @@ function Canvas({ jsonData, actuatorType, parentCallback }: any) {
   // check the type as id in span
   type selctionType = 'force' | 'tree' | '';
 
-  const [selection, setSelection] = useState<selctionType>('force');
+  function initSelction(actuatorType: ActuatorType) {
+    if (actuatorType === 'defaultTreeGraph') {
+      return 'tree'
+    } else {
+      return 'force'
+    }
+  }
+
+  const [selection, setSelection] = useState<selctionType>(initSelction(actuatorType));
 
   function gotoDragAndDrop() {
     parentCallback(undefined)
@@ -27,6 +36,9 @@ function Canvas({ jsonData, actuatorType, parentCallback }: any) {
     if (actuatorType === 'actuatorBeansJson') {
       const typeConverter: TypeConverter<BeansJson, ForceDirectedGraphContainer> = new ToForceDirectedGraph();
       return typeConverter.convert(jsonData);
+    }
+    if (actuatorType === 'defaultTreeGraph') {
+      return jsonData;
     }
     return {
       links: [],

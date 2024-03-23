@@ -1,4 +1,4 @@
-export type ActuatorType = 'defaultForceDirectedGraph' | 'actuatorBeansJson' | 'unknown';
+export type ActuatorType = 'defaultForceDirectedGraph' | 'actuatorBeansJson' | 'defaultTreeGraph' | 'unknown';
 
 
 export interface ActuatorBean {
