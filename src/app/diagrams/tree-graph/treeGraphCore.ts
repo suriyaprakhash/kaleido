@@ -32,6 +32,12 @@ export function createTreeGraph(
     const svgRef: MutableRefObject<SVGSVGElement | null> = treeGraphInput.svgRef!;
     const svgRefElementString: string = treeGraphInput.svgRefElementString!;
 
+    const fontSize = 12;
+    const fontSizeDuringTransition = 15;
+    const fontFamily = 'sans-serif';
+    const nodeCircleRadius = 5;
+    const nodeCircleRadiusDuringTransition = 8;
+
     // Select the SVG container.
     let svg: d3.Selection<SVGSVGElement | null, unknown, (null | HTMLElement), undefined>;
     if (svgRef) {
@@ -84,7 +90,7 @@ export function createTreeGraph(
         .attr("height", height)
         .attr("viewBox", [-dy / 3, x0 - dx, width, height])
         // .attr("viewBox", [dy, dx, width, height])
-        .attr("style", "max-width: 100%; height: auto; font: 18px sans-serif;");
+        .attr("style", "max-width: 100%; height: auto; font: " + fontSize + "px " + fontFamily + ";");
     // .attr("viewBox", [0, 0, width, height])
     // Update the size on window resize
     // svg.attr("width", width).attr("height", height).attr("viewBox", [0, 0, width, height])
@@ -133,16 +139,16 @@ export function createTreeGraph(
 
     node.append("circle")
         .attr("fill", (d: any) => d.children ? "#00b834" : "#b80000")
-        .attr("r", 20)
+        .attr("r", nodeCircleRadius)
         .on('mouseover', function (d, i) {
             d3.select(this).transition()
                  .duration(3)
-                 .attr("r", 30);
+                 .attr("r", nodeCircleRadiusDuringTransition);
         })
         .on('mouseout', function (d, i) {
             d3.select(this).transition()
                  .duration(2)
-                 .attr("r", 20);
+                 .attr("r", nodeCircleRadius);
        });
 
     node.append("text")
@@ -155,12 +161,12 @@ export function createTreeGraph(
         .on('mouseover', function (d, i) {
             d3.select(this).transition()
                  .duration(3)
-                 .attr("style", "font: 36px sans-serif;");
+                 .attr("style", "font: " + fontSizeDuringTransition + "px " + fontFamily + ";");
         })
         .on('mouseout', function (d, i) {
             d3.select(this).transition()
                  .duration(2)
-                 .attr("style", "font: 18px sans-serif;");
+                 .attr("style", "font: " + fontSize + "px " + fontFamily + ";");
        });
 
 
