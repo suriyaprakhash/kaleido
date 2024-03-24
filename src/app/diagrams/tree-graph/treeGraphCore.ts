@@ -68,10 +68,10 @@ export function createTreeGraph(
     // const dy = width / (root.height + 1);
 
     // height between each node row
-    const dx = 30; 
+    const dx = 30;
     // const dy = (width - marginRight - marginLeft) / (1 + root.height);
     // distance between each col item
-    const dy = 500;
+    const dy = 300;
 
     // Define the tree layout and the shape for links.
     const tree = d3.cluster().nodeSize([dx, dy]);
@@ -199,6 +199,7 @@ export function createTreeGraph(
         .attr("stroke-opacity", 0.4)
         .attr("stroke-width", 1.5);
 
+
     const gNode = container.append("g")
         .attr("cursor", "pointer")
         .attr("pointer-events", "all");
@@ -248,8 +249,22 @@ export function createTreeGraph(
 
         nodeEnter.append("circle")
             .attr("r", 2.5)
-            .attr("fill", (d: any) => d._children ? "#555" : "#999")
-            .attr("stroke-width", 10);
+            .attr("fill", (d: any) => d._children ? color(d.depth + '') : "#999")
+            .attr("stroke-width", 10)
+            .on('mouseover', function (d, i: any) {
+                if (i._children) {
+                    d3.select(this).transition()
+                        .duration(3)
+                        .attr("r", 5);
+                }
+            })
+            .on('mouseout', function (d, i: any) {
+                if (i._children) {
+                    d3.select(this).transition()
+                        .duration(2)
+                        .attr("r", 2.5);
+                }
+            });
 
         nodeEnter.append("text")
             .attr("dy", "0.31em")
@@ -259,7 +274,22 @@ export function createTreeGraph(
             .attr("stroke-linejoin", "round")
             .attr("stroke-width", 3)
             .attr("stroke", "white")
-            .attr("paint-order", "stroke");
+            .attr("paint-order", "stroke")
+            .on('mouseover', function (d, i: any) {
+                if (i._children) {
+                    d3.select(this).transition()
+                    .duration(3)
+                    .attr("style", "font: " + fontSizeDuringTransition + "px " + fontFamily + ";");
+                }
+      
+            })
+            .on('mouseout', function (d, i: any) {
+                if (i._children) {
+                    d3.select(this).transition()
+                        .duration(2)
+                        .attr("style", "font: " + fontSize + "px " + fontFamily + ";");
+                }
+            });
 
         // Transition nodes to their new position.
         const nodeUpdate = node.merge(nodeEnter as any).transition(transition as any)
@@ -282,6 +312,16 @@ export function createTreeGraph(
             .attr("d", d => {
                 const o = { x: source.x0, y: source.y0 };
                 return diagonal({ source: o, target: o });
+            })
+            .on('mouseover', function (d, i) {
+                d3.select(this).transition()
+                    .duration(3)
+                    .attr("stroke-width", 3);
+            })
+            .on('mouseout', function (d, i) {
+                d3.select(this).transition()
+                    .duration(2)
+                    .attr("stroke-width", 1.5);
             });
 
         // Transition links to their new position.
@@ -336,7 +376,7 @@ export function createTreeGraph(
 
     // zoomContainer.append('g');
 
-      // prevent scrolling then apply the default filter
+    // prevent scrolling then apply the default filter
     // function filter(event: any) {
     //     event.preventDefault();
     //     return (!event.ctrlKey || event.type === 'wheel') && !event.button;
@@ -344,13 +384,13 @@ export function createTreeGraph(
 
     function reset() {
         svg.transition()
-          .duration(750)
-          .call(zoom.transform, d3.zoomIdentity);
-      }
+            .duration(750)
+            .call(zoom.transform, d3.zoomIdentity);
+    }
 
     function zoomListener(e: any) {
-            //     container
-            // .attr('transform', `translate(${e.transform.x},${e.transform.y})`);
+        //     container
+        // .attr('transform', `translate(${e.transform.x},${e.transform.y})`);
         // gNode
         //     .attr('transform', (d: any) => {
         //         return `translate(${d.y + e.transform.x},${d.x + e.transform.y})`;

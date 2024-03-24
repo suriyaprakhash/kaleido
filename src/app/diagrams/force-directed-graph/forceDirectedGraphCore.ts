@@ -125,9 +125,16 @@ export function createForceDirectedGraph(
     // Add a zoom/pan behavior.
     const zoom = d3.zoom<any, any>();
     zoom.on("zoom", zoomListener);
-
     const zoomContainer: d3.Selection<SVGSVGElement | null, unknown,  (null|HTMLElement), undefined> = svg.call(zoom);
     zoomContainer.append('g');
+    
+    reset();
+
+    function reset() {
+        svg.transition()
+            .duration(750)
+            .call(zoom.transform, d3.zoomIdentity);
+    }
 
     function zoomListener(e: any) {
         node
