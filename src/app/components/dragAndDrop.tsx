@@ -171,7 +171,7 @@ export default function DragAndDrop({ validationTypeFromParent, parentCallback }
       {files.map((file: File, idx: number) => (
         <div key={idx} className="flex flex-row space-x-5 mt-10">
           <span className="text-neutral-500">{file.name}</span>
-          <span className="text-red-500 cursor-pointer hover:text-red-300" onClick={() => removeFile(file.name, idx)}>
+          <span className="text-orange-500 cursor-pointer hover:text-red-300" onClick={() => removeFile(file.name, idx)}>
             remove
           </span>
         </div>

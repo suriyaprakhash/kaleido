@@ -188,7 +188,7 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
                             {tempJsonData.nodes.map(node => <li className="p-3 text-gray-400 cursor-pointer hover:text-orange-300" key={node.id} onClick={(e) => filterNode(e, node.id)}>{node.id}</li>)}
                         </ul>
                     </div>
-                    <span className="hidden lg:block col-span-2 text-red-500 cursor-pointer hover:text-red-300" onClick={(e) => clearSelection(e)}>
+                    <span className="border-2 border-orange-300 rounded-lg hidden lg:block col-span-2 text-orange-600 cursor-pointer  text-center hover:text-orange-400" onClick={(e) => clearSelection(e)}>
                        Clear Selection
                     </span>
                 </div>
