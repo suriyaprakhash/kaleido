@@ -51,12 +51,6 @@ const TreeGraph = ({ convertedJsonData, actualJsonData }: { convertedJsonData: T
     <section className="border-8 border-orange-600">
 
       <section className="grid gap-4 border-8 border-red-100 p-2 sm:grid-cols-4">
-  
-
-        <div className="sm:col-span-3 border-4 border-green-800 rounded-lg">
-          <svg ref={svgRef} className="border-4 border-green-400 rounded-lg">
-          </svg>
-        </div>
 
         <div className="sm:col-span-1 border-4 border-green-800 grid grid-cols-2 p-4 h-1/2 ">
           <div className="col-span-2 text-center">Search Window</div>
@@ -70,6 +64,10 @@ const TreeGraph = ({ convertedJsonData, actualJsonData }: { convertedJsonData: T
           </div>
         </div>
 
+        <div className="sm:col-span-3 border-4 border-green-800 rounded-lg">
+          <svg ref={svgRef} className="border-4 border-green-400 rounded-lg">
+          </svg>
+        </div>
 
       </section>
 

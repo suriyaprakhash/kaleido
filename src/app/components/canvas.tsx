@@ -108,7 +108,7 @@ function Canvas({ actualJsonData, actuatorType, parentCallback }: any) {
         </div>
         <div className="col-span-2 border-4 border-red-400 flex flex-col p-2">
           <button className="bg-teal-600 rounded-lg p-3" onClick={gotoDragAndDrop}>
-            <span className="text-white">Go Back</span>
+            <span className="text-white">Start Over</span>
           </button>
         </div>
       </section>

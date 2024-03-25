@@ -5,7 +5,7 @@ import { ActuatorType } from "../actuators/actuatorTypes";
 import { ActuatorTypeDecider } from "../actuators/ActuatorTypeDecider";
 
 
-export default function DragAndDrop({validationTypeFromParent, parentCallback}: any) {
+export default function DragAndDrop({ validationTypeFromParent, parentCallback }: any) {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const inputRef = useRef<any>(null);
   const [files, setFiles] = useState<any>([]);
@@ -48,9 +48,6 @@ export default function DragAndDrop({validationTypeFromParent, parentCallback}: 
     }
   }
 
-  // function submitToParent() {
-    
-  // }
 
   const readFile = async (file: File): Promise<any | undefined> => {
     const reader = new FileReader();
@@ -120,52 +117,60 @@ export default function DragAndDrop({validationTypeFromParent, parentCallback}: 
 
   return (
     <div className="flex flex-col items-center m-4">
-      <form onClick={openFileExplorer}
-        className={`${dragActive ? "bg-blue-400" : "bg-blue-100"
-          }  p-8 w-2/3 h-[60vh] rounded-lg text-center flex flex-col items-center justify-center 
-          hover:bg-blue-200 hover:animate-pulse`}
-        onDragEnter={handleDragEnter}
-        onSubmit={(e) => e.preventDefault()}
-        onDrop={handleDrop}
-        onDragLeave={handleDragLeave}
-        onDragOver={handleDragOver}
-      >
-        {/* this input element allows us to select files for upload. We make it hidden so we can activate it when the user clicks select files */}
-        <input
-          placeholder="fileInput"
-          className="hidden"
-          ref={inputRef}
-          type="file"
-          multiple={false}
-          onChange={handleChange}
-          accept=".json"
-        />
 
-        <p   className="text-gray-500">
-          Drag & Drop files or
-          Select files
-          to upload
-        </p>
-      </form>
-
-      <button
-          className="bg-teal-600 rounded-lg p-5 mt-3 w-auto"
-          onClick={handleSubmitFile}
+      {files.length === 0 &&
+        <form onClick={openFileExplorer}
+          className={`${dragActive ? "bg-teal-100" : "bg-teal-100" 
+            }  p-8 w-2/3 h-[60vh] rounded-lg text-center flex flex-col items-center justify-center cursor-pointer
+          hover:bg-teal-300 hover:animate-pulse`}
+          onDragEnter={handleDragEnter}
+          onSubmit={(e) => e.preventDefault()}
+          onDrop={handleDrop}
+          onDragLeave={handleDragLeave}
+          onDragOver={handleDragOver}
         >
-          <span className="p-2 text-white">Process</span>
-        </button>
+          {/* this input element allows us to select files for upload. We make it hidden so we can activate it when the user clicks select files */}
+          <input placeholder="fileInput"
+            className="hidden"
+            ref={inputRef}
+            type="file"
+            multiple={false}
+            onChange={handleChange}
+            accept=".json"
+          />
 
-      {errorMessage?.length == 0 ? null :
-          <div className="bg-red-700 text-white opacity-50 rounded-xl p-2 mt-3 w-auto">{errorMessage}</div>
-        }
+          <p className="text-gray-500">
+            Drag & Drop files or
+            Select files
+            to upload
+          </p>
+        </form>}
+
+      {files.length > 0 &&
+        // <button className="bg-teal-600 rounded-lg p-5 mt-3 w-auto" onClick={handleSubmitFile}>
+        //   <span className="p-2 text-white">Visualize</span>
+        // </button>
+        
+        <button type="button" onClick={handleSubmitFile} 
+                className="text-white bg-teal-600 hover:bg-teal-800  focus:bg-teal-300 
+                font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center me-2
+                dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:bg-teal-800
+                animate-bounce">
+          <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+          </svg>
+          <span className="sr-only">Visualize</span>
+        </button>
+      }
+
+      {errorMessage?.length! > 0 &&
+        <div className="bg-red-700 text-white opacity-50 rounded-xl p-2 mt-3 w-auto">{errorMessage}</div>
+      }
 
       {files.map((file: File, idx: number) => (
         <div key={idx} className="flex flex-row space-x-5">
           <span>{file.name}</span>
-          <span
-            className="text-red-500 cursor-pointer"
-            onClick={() => removeFile(file.name, idx)}
-          >
+          <span className="text-red-500 cursor-pointer" onClick={() => removeFile(file.name, idx)}>
             remove
           </span>
         </div>

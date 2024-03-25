@@ -13,7 +13,7 @@ export default function Page() {
     console.log(jsonData)
     setActuatorType(actuatorType)
     setJsonData(jsonData)
-    
+
   }
 
   const callbackFromCanvas = (jsonData: object) => {
@@ -28,21 +28,18 @@ export default function Page() {
 
   return (
 
-    <main className="flex flex-col border-8 border-black min-h-[80vh]">
+    <main className="flex flex-col border-8 border-red-500 min-h-[80vh] justify-center">
       {/* <section className="border-8 border-red-500">
           MAIN - Visualize your spring dependencies
           <h1>data gogg - check not getting applied</h1>
       </section> */}
-
-      {jsonData === undefined ? 
       <section className="border-8 border-red-300">
-          <DragAndDrop validationTypeFromParent='json' parentCallback = {callbackFromDragAndDrop} />
+        {jsonData === undefined ?
+          <DragAndDrop validationTypeFromParent='json' parentCallback={callbackFromDragAndDrop} />
+          :
+          <Canvas actualJsonData={jsonData} actuatorType={actuatorType} parentCallback={callbackFromCanvas} />
+        }
       </section>
-      :
-      <section>
-        <Canvas actualJsonData = {jsonData} actuatorType = {actuatorType} parentCallback = {callbackFromCanvas}/>
-      </section>
-      }
 
     </main>
   );

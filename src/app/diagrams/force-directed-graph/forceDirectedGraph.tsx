@@ -146,6 +146,27 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
             <section className="grid gap-4 border-8 border-red-100 p-2 sm:grid-cols-4">
                 {/* <svg ref={svgRef} className="border-4 border-green-800 md:w-[800px] sm:h-[800px]"> */}
                 
+                
+                <div className="sm:col-span-1 border-4 border-green-800 grid grid-cols-2 p-4 h-1/2 ">
+                    <div className="col-span-2 text-center">Search Window</div>
+                    <div className="col-span-2 border-4 border-green-800">
+                        <input className="border-4 border-green-600 w-full" placeholder="search" onChange={filterInputChange}/>
+                    </div>
+                    <div className="col-span-2 grid grid-cols-2 gap-2 p-2">
+                        <button className="col-span-1 bg-teal-600 rounded-lg" onClick={filterParentNodes}>
+                            <span className="text-white">Filter Depandents</span>
+                        </button>
+                        <button className="col-span-1 bg-teal-600 rounded-lg" onClick={filterChildNodes}>
+                            <span className="p-2 text-white">Filter Child</span>
+                        </button>
+                    </div>
+                </div> 
+    
+                <div className="sm:col-span-2 border-4 border-green-800 rounded-lg">
+                    <svg ref={svgRef} className="border-4 border-green-400 rounded-lg">
+                    </svg>
+                </div>
+
                 <div className="sm:col-span-1 border-4 border-green-800 grid grid-cols-2 p-4">
                     <div className="text-center col-span-2">Data Window</div>
                     <div className="col-span-2">ForceDirectedGraph</div>
@@ -160,26 +181,6 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
                         </ul>
                     </div>
                 </div>
-    
-                <div className="sm:col-span-2 border-4 border-green-800 rounded-lg">
-                    <svg ref={svgRef} className="border-4 border-green-400 rounded-lg">
-                    </svg>
-                </div>
-
-                <div className="sm:col-span-1 border-4 border-green-800 grid grid-cols-2 p-4 h-1/2 ">
-                    <div className="col-span-2 text-center">Search Window</div>
-                    <div className="col-span-2 border-4 border-green-800">
-                        <input className="border-4 border-green-600 w-full" placeholder="search" onChange={filterInputChange}/>
-                    </div>
-                    <div className="col-span-2 grid grid-cols-2 gap-2 p-2">
-                        <button className="col-span-1 bg-teal-600 rounded-lg" onClick={filterParentNodes}>
-                            <span className="text-white">Filter Depandents</span>
-                        </button>
-                        <button className="col-span-1 bg-teal-600 rounded-lg" onClick={filterChildNodes}>
-                            <span className="p-2 text-white">Filter Child</span>
-                        </button>
-                    </div>
-                </div>  
 
             </section>
    
