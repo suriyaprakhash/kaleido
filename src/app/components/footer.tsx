@@ -8,13 +8,13 @@ const Footer = () => {
           </span>
           <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
             <li>
-              <a href="https://www.suriyaprakhash.com/#about" className="hover:underline hover:text-orange-400 me-4 md:me-6">About me</a>
+              <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html" target="_blank" className="hover:underline hover:text-orange-400 me-4 md:me-6">Spring Actuator</a>
             </li>
             <li>
-              <a href="https://www.linkedin.com/in/suriya-prakhash-deenadayalan/" className="hover:underline hover:text-orange-400 me-4 md:me-6">LinkedIn</a>
+              <a href="https://www.linkedin.com/in/suriya-prakhash-deenadayalan/"  target="_blank" className="hover:underline hover:text-orange-400 me-4 md:me-6">Developer</a>
             </li>
             <li>
-              <a href="https://www.suriyaprakhash.com/#contact" className="hover:underline hover:text-orange-400">Contact</a>
+              <a href="https://www.suriyaprakhash.com/#contact" target="_blank" className="hover:underline hover:text-orange-400">Contact</a>
             </li>
           </ul>
         </div>
@@ -22,5 +22,7 @@ const Footer = () => {
     </section>
   )
 }
+
+
 
 export default Footer

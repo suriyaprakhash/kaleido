@@ -41,7 +41,7 @@ export default function DragAndDrop({ validationTypeFromParent, parentCallback }
       const actuatorType: ActuatorType = ActuatorTypeDecider.decide(jsonData);
       if (actuatorType === 'unknown') {
         setFiles([]);
-        setErrorMessage('The file passed is json however the content of the file is not supported and does not seem to be from actuator');
+        setErrorMessage('Unsupported content attached, try spring beans json');
       } else {
         parentCallback(jsonData, actuatorType);
       }
