@@ -28,12 +28,9 @@ export default function Page() {
 
   return (
 
-    <main className="flex flex-col border-8 border-red-500 min-h-[80vh] justify-center">
-      {/* <section className="border-8 border-red-500">
-          MAIN - Visualize your spring dependencies
-          <h1>data gogg - check not getting applied</h1>
-      </section> */}
-      <section className="border-8 border-red-300">
+    <main className="flex flex-col min-h-[80vh] justify-center">
+
+      <section className="">
         {jsonData === undefined ?
           <DragAndDrop validationTypeFromParent='json' parentCallback={callbackFromDragAndDrop} />
           :

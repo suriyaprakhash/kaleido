@@ -120,9 +120,9 @@ export default function DragAndDrop({ validationTypeFromParent, parentCallback }
 
       {files.length === 0 &&
         <form onClick={openFileExplorer}
-          className={`${dragActive ? "bg-teal-100" : "bg-teal-100" 
+          className={`${dragActive ? "bg-orange-50" : "bg-orange-50"
             }  p-8 w-2/3 h-[60vh] rounded-lg text-center flex flex-col items-center justify-center cursor-pointer
-          hover:bg-teal-300 hover:animate-pulse`}
+          hover:bg-orange-200 hover:text-neutral-100`}
           onDragEnter={handleDragEnter}
           onSubmit={(e) => e.preventDefault()}
           onDrop={handleDrop}
@@ -140,27 +140,28 @@ export default function DragAndDrop({ validationTypeFromParent, parentCallback }
           />
 
           <p className="text-gray-500">
-            Drag & Drop files or
-            Select files
-            to upload
+          Drop your <span className="sm:text-6xl md:text-8xl animate-pulse hover:text-white">Spring actuator beans</span> json here
           </p>
         </form>}
 
       {files.length > 0 &&
-        // <button className="bg-teal-600 rounded-lg p-5 mt-3 w-auto" onClick={handleSubmitFile}>
-        //   <span className="p-2 text-white">Visualize</span>
-        // </button>
-        
-        <button type="button" onClick={handleSubmitFile} 
-                className="text-white bg-teal-600 hover:bg-teal-800  focus:bg-teal-300 
-                font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center me-2
-                dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:bg-teal-800
-                animate-bounce">
-          <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-          </svg>
-          <span className="sr-only">Visualize</span>
-        </button>
+        <div className="flex flex-col space-y-10 items-center">
+          <div>Ready to<span className="text-2xl"> visualize</span>?</div>
+          <div>
+            <button type="button" onClick={handleSubmitFile}
+              className="text-white bg-orange-600 hover:bg-orange-800  focus:bg-orange-300 
+                  font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center me-2
+                  dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:bg-orange-800
+                  animate-bounce">
+              <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+              </svg>
+              <span className="sr-only">Visualize</span>
+            </button>
+          </div>
+
+
+        </div>
       }
 
       {errorMessage?.length! > 0 &&
@@ -168,9 +169,9 @@ export default function DragAndDrop({ validationTypeFromParent, parentCallback }
       }
 
       {files.map((file: File, idx: number) => (
-        <div key={idx} className="flex flex-row space-x-5">
-          <span>{file.name}</span>
-          <span className="text-red-500 cursor-pointer" onClick={() => removeFile(file.name, idx)}>
+        <div key={idx} className="flex flex-row space-x-5 mt-10">
+          <span className="text-neutral-500">{file.name}</span>
+          <span className="text-red-500 cursor-pointer hover:text-red-300" onClick={() => removeFile(file.name, idx)}>
             remove
           </span>
         </div>

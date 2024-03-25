@@ -48,27 +48,31 @@ const TreeGraph = ({ convertedJsonData, actualJsonData }: { convertedJsonData: T
     //   </svg>
     // </div>
 
-    <section className="border-8 border-orange-600">
+    <section className="">
 
-      <section className="grid gap-4 border-8 border-red-100 p-2 sm:grid-cols-4">
+      <section className="grid gap-4 p-2 sm:grid-cols-4">
 
-        <div className="sm:col-span-1 border-4 border-green-800 grid grid-cols-2 p-4 h-1/2 ">
-          <div className="col-span-2 text-center">Search Window</div>
-          <div className="col-span-2 border-4 border-green-800">
-            <input className="border-4 border-green-600 w-full" placeholder="search" onChange={filterInputChange} />
+        <div className="sm:col-span-1 grid grid-cols-2 p-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)] h-[150px] sm:h-[250px]">
+          <div className="col-span-2 text-center text-xl text-gray-500">Tree Search</div>
+          <div className="col-span-2">
+            <input className="border-2 border-orange-600 w-full rounded-md h-10 p-4" placeholder="search" onChange={filterInputChange} />
           </div>
-          <div className="col-span-2 grid grid-cols-2 gap-2 p-2">
-            <button className="col-span-1 bg-teal-600 rounded-lg" onClick={filterParentNodes}>
+          <div className="col-span-2 grid grid-cols-2 p-2">
+            <button className="col-span-2 bg-orange-600 rounded-lg hover:bg-orange-800" onClick={filterParentNodes}>
               <span className="text-white">Find Path</span>
             </button>
           </div>
         </div>
 
-        <div className="sm:col-span-3 border-4 border-green-800 rounded-lg">
+        {/* <div className="sm:col-span-3">
           <svg ref={svgRef} className="border-4 border-green-400 rounded-lg">
           </svg>
-        </div>
+        </div> */}
 
+        <div className="sm:col-span-3 rounded-lg">
+          <svg ref={svgRef} className="shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-lg">
+          </svg>
+        </div>
       </section>
 
       {/* <section className="border-8 border-red-400 p-2">

@@ -40,18 +40,28 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
         setFilterInput(event.target.value);
     }
 
+    function filterNode(event: any, filterValue: string) {
+        setFilterInput(filterValue);
+        filterParentNodes(event);
+    }
+
+    function clearSelection(event: any) {
+        setFilterInput('');
+        filterParentNodes(event);
+    }
+
 
     function filterParentNodes(event: any): void {
         // const filteredNodeId: string = event.target.value;
 
         // filter the node based on the input from the UI
         const filteredSoruceNodes: DataNode[] = jsonData.nodes.filter(node => node.id.toLocaleLowerCase().includes(filterInput.toLocaleLowerCase()))
-                                                        .map(filteredNodes => filteredNodes);
+            .map(filteredNodes => filteredNodes);
 
 
         // hold the jsonData in the map for convinience 
         const nodesMap: Map<string, DataNode> = new Map();
-        jsonData.nodes.forEach((node: DataNode) => nodesMap.set(node.id, node));                                                        
+        jsonData.nodes.forEach((node: DataNode) => nodesMap.set(node.id, node));
 
         if (filteredSoruceNodes?.length > 0) {
 
@@ -61,7 +71,7 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
             // const filteredSourceDataLinks: DataLink[] = jsonData.links.filter(link => link.source.includes(filteredNodeId)).map(link => link);
 
             // find all the targetNode depandents for the filteredNode
-            const filteredTargetNodes: (DataNode | undefined)[] =  filteredSourceDataLinks.map(dataLink => nodesMap.get(dataLink.target));
+            const filteredTargetNodes: (DataNode | undefined)[] = filteredSourceDataLinks.map(dataLink => nodesMap.get(dataLink.target));
 
             // All the filteredNode soruce parent along with all the targetNode dependencies
             // Set used - to filter duplicates  
@@ -75,7 +85,7 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
             filteredSoruceNodes.forEach(soruceNode => {
                 combinedSourceAndTargetNodes.add(soruceNode)
             })
-            
+
             // this update will re-trigger the useEffects as tempJsonData is its dependency 
             updateTempJsonData({
                 nodes: Array.from(combinedSourceAndTargetNodes),
@@ -89,19 +99,19 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
             });
         }
         initalized.current = false;
-    } 
+    }
 
     function filterChildNodes(event: any): void {
         // const filteredNodeId: string = event.target.value;
 
         // filter the node based on the input from the UI
         const filteredSoruceNodes: DataNode[] = jsonData.nodes.filter(node => node.id.toLocaleLowerCase().includes(filterInput.toLocaleLowerCase()))
-                                                        .map(filteredNodes => filteredNodes);
+            .map(filteredNodes => filteredNodes);
 
 
         // hold the jsonData in the map for convinience 
         const nodesMap: Map<string, DataNode> = new Map();
-        jsonData.nodes.forEach((node: DataNode) => nodesMap.set(node.id, node));                                                        
+        jsonData.nodes.forEach((node: DataNode) => nodesMap.set(node.id, node));
 
         if (filteredSoruceNodes?.length > 0) {
 
@@ -110,7 +120,7 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
 
 
             // find all the targetNode depandents for the filteredNode
-            const filteredTargetNodes: (DataNode | undefined)[] =  filteredSourceDataLinks.map(dataLink => nodesMap.get(dataLink.source));
+            const filteredTargetNodes: (DataNode | undefined)[] = filteredSourceDataLinks.map(dataLink => nodesMap.get(dataLink.source));
 
             // All the filteredNode soruce parent along with all the targetNode dependencies
             // Set used - to filter duplicates  
@@ -124,7 +134,7 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
             filteredSoruceNodes.forEach(soruceNode => {
                 combinedSourceAndTargetNodes.add(soruceNode)
             })
-            
+
             // this update will re-trigger the useEffects as tempJsonData is its dependency 
             updateTempJsonData({
                 nodes: Array.from(combinedSourceAndTargetNodes),
@@ -138,52 +148,52 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
             });
         }
         initalized.current = false;
-    } 
+    }
 
     return (
-        <section className="border-8 border-orange-600">
-            
-            <section className="grid gap-4 border-8 border-red-100 p-2 sm:grid-cols-4">
+        <section className="">
+
+            <section className="grid gap-6  p-2 sm:grid-cols-4">
                 {/* <svg ref={svgRef} className="border-4 border-green-800 md:w-[800px] sm:h-[800px]"> */}
-                
-                
-                <div className="sm:col-span-1 border-4 border-green-800 grid grid-cols-2 p-4 h-1/2 ">
-                    <div className="col-span-2 text-center">Search Window</div>
-                    <div className="col-span-2 border-4 border-green-800">
-                        <input className="border-4 border-green-600 w-full" placeholder="search" onChange={filterInputChange}/>
+
+                <div className="sm:col-span-1 grid grid-cols-2 p-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)] h-[150px] sm:h-[250px]">
+                    <div className="col-span-2 text-center text-xl text-gray-500">Graph Search</div>
+                    <div className="col-span-2 ">
+                        <input className="border-2 border-orange-600 w-full rounded-md h-10 p-4" placeholder="search" onChange={filterInputChange} />
                     </div>
-                    <div className="col-span-2 grid grid-cols-2 gap-2 p-2">
-                        <button className="col-span-1 bg-teal-600 rounded-lg" onClick={filterParentNodes}>
+                    <div className="col-span-2 grid grid-cols-2 gap-2">
+                        <button className="col-span-1 bg-orange-600 rounded-lg hover:bg-orange-800" onClick={filterParentNodes}>
                             <span className="text-white">Filter Depandents</span>
                         </button>
-                        <button className="col-span-1 bg-teal-600 rounded-lg" onClick={filterChildNodes}>
+                        <button className="col-span-1 bg-orange-600 rounded-lg hover:bg-orange-800" onClick={filterChildNodes}>
                             <span className="p-2 text-white">Filter Child</span>
                         </button>
                     </div>
-                </div> 
-    
-                <div className="sm:col-span-2 border-4 border-green-800 rounded-lg">
-                    <svg ref={svgRef} className="border-4 border-green-400 rounded-lg">
+                </div>
+
+                <div className="sm:col-span-2 rounded-lg">
+                    <svg ref={svgRef} className="shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-lg">
                     </svg>
                 </div>
 
-                <div className="sm:col-span-1 border-4 border-green-800 grid grid-cols-2 p-4">
-                    <div className="text-center col-span-2">Data Window</div>
-                    <div className="col-span-2">ForceDirectedGraph</div>
+                <div className="sm:col-span-1 shadow-[0_3px_10px_rgb(0,0,0,0.2)] grid grid-cols-2 p-4">
+                    <div className="text-center col-span-2 text-xl text-gray-400">Data Window</div>
                     <div>
-                        <p>Nodes found - {tempJsonData.nodes.length}</p>
-                        <p>Links found - {tempJsonData.links.length}</p>
+                        <p><span className="text-sm text-orange-600">Nodes found </span>{tempJsonData.nodes.length}</p>
+                        <p><span className="text-sm text-orange-600">Links found </span> {tempJsonData.links.length}</p>
                     </div>
                     <div className="col-span-2 hidden lg:block">
-                        <h3 className="">NODES</h3>
-                        <ul className="list-disc overflow-y-auto h-56">
-                            {tempJsonData.nodes.map(node => <li key={node.id}>{node.id}</li>)}
+                        <h3 className="text-sm text-gray-700">Select from available nodes</h3>
+                        <ul className="list-disc overflow-y-auto h-56 shadow-[inset_3px_5px_3px_#46464620] text-sm m-3">
+                            {tempJsonData.nodes.map(node => <li className="p-3 text-gray-400 cursor-pointer hover:text-orange-300" key={node.id} onClick={(e) => filterNode(e, node.id)}>{node.id}</li>)}
                         </ul>
                     </div>
+                    <span className="col-span-2 text-red-500 cursor-pointer hover:text-red-300" onClick={(e) => clearSelection(e)}>
+                       Clear Selection
+                    </span>
                 </div>
-
             </section>
-   
+
             {/* <section className="border-8 border-red-400 p-2">
                 <div className="text-center items-center">
                     <p>Click counter - You clicked {count} times</p>
