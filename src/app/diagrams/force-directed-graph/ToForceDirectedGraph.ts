@@ -10,6 +10,7 @@ export class ToForceDirectedGraph extends TypeConverter<BeansJson, ForceDirected
 
         const dataNodes: DataNode[] = [];
         const dataLinks: DataLink[] = [];
+        const missingLinks: DataLink[] = [];
 
         const contextMap: Map<string, Beans> = new Map(Object.entries(data.contexts));
 
@@ -40,6 +41,11 @@ export class ToForceDirectedGraph extends TypeConverter<BeansJson, ForceDirected
                         });
                     } else {
                         console.error('Missing dependency node - ' + dependency + ' or bean Node -' + beanName);
+                        missingLinks.push({
+                            source: dependency,
+                            target: beanName,
+                            value: 1
+                        });
                     }
                 });
             });
@@ -54,7 +60,8 @@ export class ToForceDirectedGraph extends TypeConverter<BeansJson, ForceDirected
 
         const defaultForceDirectedGraph: ForceDirectedGraphContainer = {
             links: dataLinks,
-            nodes: dataNodes
+            nodes: dataNodes,
+            missingLinks: missingLinks
         };
         return defaultForceDirectedGraph;
     }

@@ -13,6 +13,7 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
 
     const [tempJsonData, updateTempJsonData] = useState<ForceDirectedGraphContainer>(jsonData);
     const [filterInput, setFilterInput] = useState<string>('');
+    const [showMissingLinks, setShowMissingLinks] = useState<boolean>(true);
 
     // this is reference object referred in the html tag
     const svgRef = useRef<SVGSVGElement | null>(null);
@@ -58,6 +59,9 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
         filterParentNodes(event);
     }
 
+    function toggleShowMissingLinks() {
+        setShowMissingLinks(!showMissingLinks);
+    }
 
     function filterParentNodes(event: any): void {
         // const filteredNodeId: string = event.target.value;
@@ -160,16 +164,15 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
 
     return (
         <section className="">
-
-            <section className="grid gap-6  p-2 sm:grid-cols-4">
+            <section className="grid gap-6 p-2 sm:grid-cols-4">
                 {/* <svg ref={svgRef} className="border-4 border-green-800 md:w-[800px] sm:h-[800px]"> */}
-
-                <div className="sm:col-span-1 grid grid-cols-2 p-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)] h-[150px] sm:h-[250px]">
+                {/*  */}
+                <div className="sm:col-span-1 grid grid-cols-2 p-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
                     <div className="col-span-2 text-center text-xl text-gray-500">Graph Search</div>
-                    <div className="col-span-2 ">
+                    <div className="col-span-2 pt-3">
                         <input className="border-2 border-orange-600 w-full rounded-md h-10 p-4" placeholder="search" value={filterInput} onChange={filterInputChange} />
                     </div>
-                    <div className="col-span-2 grid grid-cols-2 gap-2">
+                    <div className="col-span-2 grid grid-cols-2 gap-2 pt-2 max-h-[100px]">
                         <button className="col-span-1 bg-orange-600 rounded-lg hover:bg-orange-800" onClick={filterParentNodes}>
                             <span className="text-white">Filter Depandents</span>
                         </button>
@@ -177,6 +180,25 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
                             <span className="p-2 text-white">Filter Child</span>
                         </button>
                     </div>
+                    {jsonData.missingLinks &&
+                        <div className="col-span-2 text-center hidden md:block">
+                            <div className="pt-5">
+                                <div onClick={toggleShowMissingLinks} className="cursor-pointer hover:text-orange-300">Show/hide missing links</div>
+                                {showMissingLinks && <ul className="list-disc overflow-y-auto h-56 shadow-[inset_-12px_-8px_40px_#46464620] text-sm m-3">
+                                    {jsonData.missingLinks?.map(link =>
+                                        <li className="p-3 text-gray-400 hover:text-orange-300" key={link.source}>
+
+                                            {/* <svg className="h-3 w- text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg> */}
+                                            <span>{link.source} - {link.target}</span>
+                                        </li>)}
+
+                                </ul>}
+                            </div>
+                        </div>
+                    }
                 </div>
 
                 <div className="sm:col-span-2 rounded-lg">
@@ -190,20 +212,20 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
                         <p><span className="text-sm text-orange-600">Nodes found </span>{tempJsonData.nodes.length}</p>
                         <p><span className="text-sm text-orange-600">Links found </span> {tempJsonData.links.length}</p>
                     </div>
-                    <div className="col-span-2 hidden lg:block">
+                    <div className="col-span-2 hidden md:block">
                         <h3 className="text-sm text-gray-700">Select from available nodes</h3>
                         <ul className="list-disc overflow-y-auto h-56 shadow-[inset_-12px_-8px_40px_#46464620] text-sm m-3">
                             {tempJsonData.nodes.map(node =>
-                                <li className="p-3 text-gray-400 cursor-pointer hover:text-orange-300" key={node.id}  onClick={(e) => filterParentNodes(e)}>
-                                    
-                                        {/* <svg className="h-3 w- text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <li className="p-3 text-gray-400 cursor-pointer hover:text-orange-300" key={node.id} onClick={(e) => filterParentNodes(e)}>
+
+                                    {/* <svg className="h-3 w- text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg> */}
-                                        <span onMouseEnter={filterInputChangeFromSelection}>{node.id}</span>
-                                        
+                                    <span onMouseEnter={filterInputChangeFromSelection}>{node.id}</span>
+
                                 </li>)}
-                                        
+
                         </ul>
                     </div>
                     {/* <div className="border-2 border-orange-300 rounded-lg hidden lg:block col-span-2 items-center aligb-center h-10">

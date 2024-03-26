@@ -52,7 +52,7 @@ const TreeGraph = ({ convertedJsonData, actualJsonData }: { convertedJsonData: T
 
       <section className="grid gap-4 p-2 sm:grid-cols-4">
 
-        <div className="sm:col-span-1 grid grid-cols-2 p-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)] h-[150px] sm:h-[250px]">
+        <div className="sm:col-span-1 grid grid-cols-2 p-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)] h-[250px] sm:h-[350px]">
           <div className="col-span-2 text-center text-xl text-gray-500">Tree Search</div>
           <div className="col-span-2">
             <input className="border-2 border-orange-600 w-full rounded-md h-10 p-4" placeholder="search" onChange={filterInputChange} />
@@ -61,6 +61,9 @@ const TreeGraph = ({ convertedJsonData, actualJsonData }: { convertedJsonData: T
             <button className="col-span-2 bg-orange-600 rounded-lg hover:bg-orange-800" onClick={filterParentNodes}>
               <span className="text-white">Find Path</span>
             </button>
+          </div>
+          <div className="col-span-2 p-2text-gray-500 text-sm pt-3">
+            <b className="text-orange-400 text-lg">Warning </b>There could be duplicate paths, because each node is computed to show all its corresponding child dependents
           </div>
         </div>
 

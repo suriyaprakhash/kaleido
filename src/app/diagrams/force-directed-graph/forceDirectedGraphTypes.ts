@@ -14,6 +14,7 @@ export interface DataNode {
 export interface ForceDirectedGraphContainer {
     nodes: DataNode[];
     links: DataLink[];
+    missingLinks?: DataLink[];
 }
 
 
