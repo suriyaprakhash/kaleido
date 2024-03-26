@@ -8,7 +8,7 @@ const Footer = () => {
           </span>
           <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
             <li>
-              <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html" target="_blank" className="hover:underline hover:text-orange-400 me-4 md:me-6">What's Actuator</a>
+              <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html" target="_blank" className="hover:underline hover:text-orange-400 me-4 md:me-6">What&rsquo;s Actuator</a>
             </li>
             {/* <li>
               <a href="https://www.linkedin.com/in/suriya-prakhash-deenadayalan/"  target="_blank" className="hover:underline hover:text-orange-400 me-4 md:me-6">Developer</a>
