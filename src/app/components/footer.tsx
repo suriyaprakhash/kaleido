@@ -10,12 +10,16 @@ const Footer = () => {
             <li>
               <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html" target="_blank" className="hover:underline hover:text-orange-400 me-4 md:me-6">What&rsquo;s Actuator</a>
             </li>
+            <li>
+              <a href="https://youtu.be/htgA_U8k7zU" target="_blank" className="hover:underline hover:text-orange-400 me-4 md:me-6">How it works</a>
+            </li>
             {/* <li>
               <a href="https://www.linkedin.com/in/suriya-prakhash-deenadayalan/"  target="_blank" className="hover:underline hover:text-orange-400 me-4 md:me-6">Developer</a>
             </li> */}
             <li>
               <a href="https://www.suriyaprakhash.com/#contact" target="_blank" className="hover:underline hover:text-orange-400">Report bug</a>
             </li>
+
           </ul>
         </div>
       </footer>
