@@ -167,7 +167,7 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
                 <div className="sm:col-span-1 grid grid-cols-2 p-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)] h-[150px] sm:h-[250px]">
                     <div className="col-span-2 text-center text-xl text-gray-500">Graph Search</div>
                     <div className="col-span-2 ">
-                        <input className="border-2 border-orange-600 w-full rounded-md h-10 p-4" placeholder="search" onChange={filterInputChange} />
+                        <input className="border-2 border-orange-600 w-full rounded-md h-10 p-4" placeholder="search" value={filterInput} onChange={filterInputChange} />
                     </div>
                     <div className="col-span-2 grid grid-cols-2 gap-2">
                         <button className="col-span-1 bg-orange-600 rounded-lg hover:bg-orange-800" onClick={filterParentNodes}>
