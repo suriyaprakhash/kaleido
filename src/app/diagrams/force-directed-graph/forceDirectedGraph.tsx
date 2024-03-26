@@ -40,6 +40,14 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
         setFilterInput(event.target.value);
     }
 
+    function filterInputChangeFromSelection(event: any): void {
+        if (event.target.textContent === 'Clear Selection') {
+            setFilterInput('');
+        } else {
+            setFilterInput(event.target.textContent);
+        }
+    }
+
     function filterNode(event: any, filterValue: string) {
         setFilterInput(filterValue);
         filterParentNodes(event);
@@ -178,19 +186,37 @@ const ForceDirectedGraph = ({ jsonData }: { jsonData: ForceDirectedGraphContaine
 
                 <div className="sm:col-span-1 shadow-[0_3px_10px_rgb(0,0,0,0.2)] grid grid-cols-2 p-4">
                     <div className="text-center col-span-2 text-xl text-gray-400">Data Window</div>
-                    <div>
+                    <div className="">
                         <p><span className="text-sm text-orange-600">Nodes found </span>{tempJsonData.nodes.length}</p>
                         <p><span className="text-sm text-orange-600">Links found </span> {tempJsonData.links.length}</p>
                     </div>
                     <div className="col-span-2 hidden lg:block">
                         <h3 className="text-sm text-gray-700">Select from available nodes</h3>
-                        <ul className="list-disc overflow-y-auto h-56 shadow-[inset_3px_5px_3px_#46464620] text-sm m-3">
-                            {tempJsonData.nodes.map(node => <li className="p-3 text-gray-400 cursor-pointer hover:text-orange-300" key={node.id} onClick={(e) => filterNode(e, node.id)}>{node.id}</li>)}
+                        <ul className="list-disc overflow-y-auto h-56 shadow-[inset_-12px_-8px_40px_#46464620] text-sm m-3">
+                            {tempJsonData.nodes.map(node =>
+                                <li className="p-3 text-gray-400 cursor-pointer hover:text-orange-300" key={node.id}  onClick={(e) => filterParentNodes(e)}>
+                                    
+                                        {/* <svg className="h-3 w- text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg> */}
+                                        <span onMouseEnter={filterInputChangeFromSelection}>{node.id}</span>
+                                        
+                                </li>)}
+                                        
                         </ul>
                     </div>
-                    <span className="border-2 border-orange-300 rounded-lg hidden lg:block col-span-2 text-orange-600 cursor-pointer  text-center hover:text-orange-400" onClick={(e) => clearSelection(e)}>
-                       Clear Selection
-                    </span>
+                    {/* <div className="border-2 border-orange-300 rounded-lg hidden lg:block col-span-2 items-center aligb-center h-10">
+                        <p className=" text-orange-600 cursor-pointer text-center hover:text-orange-400" >
+                            Clear Selection
+                        </p>
+                    </div> */}
+                    <div className="col-span-2 grid grid-cols-2 gap-2">
+                        <button className="col-span-2 border-2 border-orange-400 rounded-lg hover:bg-orange-500 pl-4 pr-4" onMouseEnter={filterInputChangeFromSelection} onClick={(e) => clearSelection(e)}>
+                            <span className="p-2 text-gray-700 hover:text-white" >Clear Selection</span>
+                        </button>
+                    </div>
+
                 </div>
             </section>
 
