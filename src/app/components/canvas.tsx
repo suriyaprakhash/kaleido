@@ -81,7 +81,7 @@ function Canvas({ actualJsonData, actuatorType, parentCallback }: any) {
             className="relative group transition-all duration-200 focus:overflow-visible w-max h-max p-5 overflow-hidden flex flex-row items-center justify-center
              bg-white gap-2 rounded-lg border border-orange-400 hover:text-orange-700">
             <span>
-              Select visulaization
+              Select visualization
             </span>
             <svg className="rotate-90 group-focus:rotate-180" xmlns="http://www.w3.org/2000/svg" width="22" height="22"
               viewBox="0 0 24 24">
