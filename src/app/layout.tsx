@@ -23,7 +23,11 @@ export default function RootLayout({
 
       <body className="">
         <div>
-          <Script id="ga"
+          <Script id="ga4-script1"
+            strategy="afterInteractive" // Recommended for GTM
+            src="https://www.googletagmanager.com/gtag/js?id=G-HNBFN3E2FT"
+          />
+          <Script id="ga-script2"
             strategy="afterInteractive" // Recommended for GTM
             dangerouslySetInnerHTML={{
               __html: `
