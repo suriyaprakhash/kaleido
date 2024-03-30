@@ -23,7 +23,7 @@ export default function RootLayout({
 
       <body className="">
         <div>
-          <Script
+          <Script id="ga"
             strategy="afterInteractive" // Recommended for GTM
             dangerouslySetInnerHTML={{
               __html: `
